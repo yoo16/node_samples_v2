@@ -1,0 +1,28 @@
+<div class="p-4 bg-white rounded-lg shadow-md dark:bg-slate-800">
+  <form action="/feed/add" method="post" class="space-y-4">
+    <input type="hidden" name="user_id" value="<%= authUser.id %>" onchange="handleChangeInput()">
+
+    <div class="flex items-start space-x-4">
+      <img class="avatar w-9 h-9 rounded-full" src="/images/no-avatar.png" data-src="<%= authUser.avatar_url %>">
+      <textarea id="content" name="content"
+        class="w-full p-2 text-base bg-transparent border-0 rounded-md resize-none focus:ring-0 text-slate-800 dark:text-slate-200 placeholder-slate-500 dark:placeholder-slate-400"
+        placeholder="いま何してる？" rows="3"></textarea>
+
+      <div class="flex items-center justify-between pt-4 dark:border-slate-700">
+        <button id="post-button" type="submit" disabled
+          class="px-6 py-2 text-sm opacity-50 font-semibold text-white bg-sky-600 rounded-full hover:bg-primary-700 disabled:bg-primary-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors">
+          Post
+        </button>
+      </div>
+  </form>
+</div>
+
+<script>
+  const handleChangeInput = () => {
+    const content = document.getElementById('content').value;
+    document.getElementById('post-button').disabled = content.trim() === '';
+    document.getElementById('post-button').classList.toggle('opacity-50', content.trim() === '');
+  };
+
+  document.getElementById('content').addEventListener('input', handleChangeInput);
+</script>

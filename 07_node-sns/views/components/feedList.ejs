@@ -1,0 +1,7 @@
+  <div class="mt-8 space-y-6">
+    <% if (feeds) { %>
+    <% feeds.forEach(feed => { %>
+    <%- include('../components/feed', { feed }) %>
+    <% }) %>
+    <% } %>
+  </div>

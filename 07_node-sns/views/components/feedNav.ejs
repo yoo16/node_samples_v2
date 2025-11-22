@@ -1,0 +1,31 @@
+<div class="flex justify-around pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+  <!-- リプライ -->
+  <button class="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
+    <img class="w-3 h-3" src="/images/bubble.svg" alt="Repost">
+    <label class="reply-count" for=""><%= feed.replyCount %></label>
+  </button>
+
+  <!-- リポスト -->
+  <button class="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
+    <img class="w-3 h-3" src="/images/loop.svg" alt="Repost">
+    <label class="repost-count" for=""><%= feed.repostCount %></label>
+  </button>
+
+  <!-- いいね -->
+  <button data-id="<%= feed.id %>" class="btn-like flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
+    <% if (feed.liked) { %>
+    <img class="w-3 h-3" src="/images/heart-fill.svg" alt="Like">
+    <% } else { %>
+    <img class="w-3 h-3" src="/images/heart.svg" alt="Like">
+    <% } %>
+    <label class="like-count" for="">
+    <%= feed.likes_count %>
+    </label>
+  </button>
+
+  <!-- インプレッション -->
+  <div class="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
+    <img class="w-3 h-3" src="/images/impression.svg" alt="Impressions">
+    <label class="impression-count" for=""><%= feed.impressionCount %></label>
+  </div>
+</div>

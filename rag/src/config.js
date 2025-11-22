@@ -1,0 +1,1 @@
+export const MODEL_PROVIDER = process.env.MODEL_PROVIDER || "gemini"; // "gemini" or "openai"

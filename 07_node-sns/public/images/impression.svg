@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg id="svg-impression" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <style type="text/css">
+    .st0 { fill: #8A9AA4; }
+  </style>
+  <path class="st0" d="M256,96C128,96,27.2,179.2,0,256c27.2,76.8,128,160,256,160s228.8-83.2,256-160
+    C484.8,179.2,384,96,256,96z M256,368c-61.8,0-112-50.2-112-112s50.2-112,112-112s112,50.2,112,112S317.8,368,256,368z"/>
+  <circle class="st0" cx="256" cy="256" r="64"/>
+</svg>

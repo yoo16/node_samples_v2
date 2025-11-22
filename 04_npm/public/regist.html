@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Express Server</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-sky-600 text-white p-4 shadow-md">
+        <nav class="flex">
+            <h1 class="text-2xl font-bold mr-6">🌐 Express Server</h1>
+            <ul class="flex justify-start space-x-4 mt-2">
+                <li><a href="/">Home</a></li>
+                <li><a href="/regist">Register</a></li>
+                <li><a href="/login">SignIn</a></li>
+                <li><a href="/mypage">Mypage</a></li>
+                <li><a href="/logout">SignOut</a></li>
+                <li><a href="/api/user/">User(JSON)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="regist" class="flex justify-center">
+        <div class="w-1/2 mt-3 p-5 shadow-md">
+            <h2 class="text-2xl mb-3 font-normal text-center">Sign Up</h2>
+            <!-- Form -->
+            <!-- regist/add/ に POSTリクエスト -->
+            <form action="/regist/add" method="post">
+                <div class="relative mb-4">
+                    <input type="email" name="email" value="" id="email" class="block
+                        px-2.5 pb-2.5 pt-6 mb-3
+                        w-full rounded-lg
+                        text-sm 
+                        text-gray-900 
+                        ring-1 ring-gray-300 
+                        focus:outline-none 
+                        focus:ring-1 
+                        focus:ring-blue-600 
+                        peer" placeholder=" " required>
+                    <label for="email" class="absolute 
+                        text-sm text-gray-400 
+                        duration-300 
+                        transform -translate-y-4 scale-75 
+                        top-4 
+                        origin-[0] start-2.5 
+                        peer-focus:px-0
+                        peer-focus:text-blue-600 
+                        peer-focus:dark:text-blue-500 
+                        peer-placeholder-shown:scale-100 
+                        peer-placeholder-shown:translate-y-0 
+                        peer-focus:scale-75 
+                        peer-focus:-translate-y-4">
+                        Email
+                    </label>
+                </div>
+                <div class="relative mb-4">
+                    <input type="password" name="password" id="password" class="block
+                        px-2.5 pb-2.5 pt-6 mb-3 
+                        w-full rounded-lg
+                        text-sm 
+                        text-gray-900 
+                        ring-1 ring-gray-300 
+                        focus:outline-none 
+                        focus:ring-1 
+                        focus:ring-blue-600 
+                        peer" placeholder=" " required>
+                    <label for="password" class="absolute 
+                        text-sm text-gray-400 
+                        duration-300 
+                        transform -translate-y-4 scale-75 
+                        top-4 
+                        origin-[0] start-2.5 
+                        peer-focus:px-0
+                        peer-focus:text-blue-600 
+                        peer-focus:dark:text-blue-500 
+                        peer-placeholder-shown:scale-100 
+                        peer-placeholder-shown:translate-y-0 
+                        peer-focus:scale-75 
+                        peer-focus:-translate-y-4">
+                        パスワード
+                    </label>
+                </div>
+
+                <!-- display_name -->
+                <div class="relative mb-4">
+                    <input type="text" name="display_name" value="" id="display_name" class="block
+                        px-2.5 pb-2.5 pt-6 mb-3
+                        w-full rounded-lg
+                        text-sm 
+                        text-gray-900 
+                        ring-1 ring-gray-300 
+                        focus:outline-none 
+                        focus:ring-1 
+                        focus:ring-blue-600 
+                        peer" placeholder=" " required>
+                    <label for="display_name" class="absolute 
+                        text-sm text-gray-400 
+                        duration-300 
+                        transform -translate-y-4 scale-75 
+                        top-4 
+                        origin-[0] start-2.5 
+                        peer-focus:px-0
+                        peer-focus:text-blue-600 
+                        peer-focus:dark:text-blue-500 
+                        peer-placeholder-shown:scale-100 
+                        peer-placeholder-shown:translate-y-0 
+                        peer-focus:scale-75 
+                        peer-focus:-translate-y-4">
+                        ディスプレイ名
+                    </label>
+                </div>
+
+                <div>
+                    <button id="submit_button" class="w-full
+                        mb-2 py-2 px-4 bg-sky-500 
+                        hover:bg-sky-700 
+                        text-white 
+                        rounded-lg
+                        disabled:bg-blue-300">
+                        Sign Up
+                    </button>
+                </div>
+            </form>
+            <div>
+                <p class="text-sm text-center ">
+                    <a href="/login/" class="p-3 text-blue-600 hover:underline">アカウントをお持ちの方はこちら</a>
+                </p>
+                <p class="text-sm text-center">
+                    <button onclick="inputTestRegistUser()" class="p-3 text-gray-600 hover:underline">Test
+                        Input</button>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

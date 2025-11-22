@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>🕵️‍♂️ イベントループ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="bg-gray-100 flex flex-col items-center p-6">
+
+    <h1 class="text-2xl font-bold mb-2">🕵️‍♂️ イベントループ</h1>
+    <div>
+        <ul class="mb-6 text-gray-700">
+            <li>コナンは天才だが、1つの事件しか同時に解けない。</li>
+            <li>小事件（マイクロ）を先に片付けてから大事件（マクロ）へ挑む！</li>
+        </ul>
+    </div>
+
+    <!-- コンテナ -->
+    <div class="flex gap-8">
+
+        <!-- コールスタック -->
+        <div class="box w-44 h-64 flex flex-col">
+            <h2 class="text-center font-bold mb-2">🧠 コナンの頭の中</h2>
+            <div id="stack" class="flex-1 flex flex-col-reverse"></div>
+        </div>
+
+        <!-- イベントループ -->
+        <div class="flex flex-col items-center justify-center">
+            <div
+                class="w-32 h-32 rounded-full border-4 border-gray-600 flex items-center justify-center font-bold bg-yellow-50 text-center">
+                コナンの<br>推理ループ
+            </div>
+            <p class="quote mt-2 text-sm">「事件の匂いがする…！」</p>
+            <div class="mt-4 flex gap-2">
+                <button id="addMacro" class="px-2 py-2 bg-blue-500 text-sm text-white rounded hover:bg-blue-600">
+                    💥 大事件発生
+                </button>
+                <button id="addMicro" class="px-2 py-2 bg-green-500 text-sm text-white rounded hover:bg-green-600">
+                    🔍 小事件発生
+                </button>
+            </div>
+        </div>
+
+        <!-- キュー -->
+        <div class="flex gap-4">
+            <div class="box w-44 h-64 flex flex-col">
+                <h2 class="text-center font-bold mb-2">🔍 小事件キュー</h2>
+                <div id="microQueue" class="flex-1 flex flex-col-reverse"></div>
+            </div>
+            <div class="box w-44 h-64 flex flex-col">
+                <h2 class="text-center font-bold mb-2">💥 大事件キュー</h2>
+                <div id="macroQueue" class="flex-1 flex flex-col-reverse"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ログ -->
+    <h2 class="mt-8 font-bold text-lg">📜 推理ログ</h2>
+    <div id="log"></div>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
