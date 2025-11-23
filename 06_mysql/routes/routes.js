@@ -1,7 +1,5 @@
 // Express Router
 import { Router } from 'express';
-// User Model
-import user from '../models/User.js';
 
 // ビューのディレクトリパス
 const viewDir = new URL('../views', import.meta.url).pathname + '/';
@@ -54,20 +52,6 @@ router.get('/user/list', (req, res) => {
 router.get('/user/:id/edit', (req, res) => {
     const path = viewDir + 'user/edit.html';
     return res.sendFile(path);
-});
-
-// POST /user/:id/update
-router.post('/user/:id/update', async (req, res) => {
-    const id = req.params.id;
-    const { name, email } = req.body;
-    console.log(id, name, email);
-
-    const result = await user.update({ id,  name, email });
-    if (result) {
-        res.redirect('/user/list');
-    } else {
-        res.redirect(`/user/${id}/edit`);
-    }
 });
 
 // GET /feed

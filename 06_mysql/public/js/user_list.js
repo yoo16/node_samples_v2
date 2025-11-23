@@ -7,6 +7,10 @@
         const data = await res.json();
 
         const users = data.users;
+        const sql = data.sql;
+
+        // SQL 表示
+        document.getElementById("sql").textContent = sql;
 
         // Tailwind カードで表示
         userList.innerHTML = users.map(user => `
