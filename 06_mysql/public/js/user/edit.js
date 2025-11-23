@@ -24,6 +24,9 @@
 
         // Avatar Preview
         document.getElementById("avatar-preview").src = user.avatar_url;
+        document.getElementById("avatar-preview").addEventListener("error", () => {
+            document.getElementById("avatar-preview").src = "/images/no-avatar.png"
+        });
 
         // SQL を表示
         document.getElementById("sql").textContent = data.sql;
