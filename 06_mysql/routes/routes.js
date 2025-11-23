@@ -1,48 +1,21 @@
 // Express Router
 import { Router } from 'express';
-
-// ビューのディレクトリパス
-const viewDir = new URL('../views', import.meta.url).pathname + '/';
+import { home } from '../controllers/HomeController.js';
+import { index as login } from '../controllers/LoginController.js';
+import { index as register } from '../controllers/RegisterController.js';
+import {
+    index as userList,
+    edit as userEdit
+} from '../controllers/UserController.js';
 
 // Express Router インスタンス生成 
 const router = Router();
 
 // --- ルーティング ---
-// GET /
-router.get('/', (req, res) => {
-    const path = viewDir + 'home.html';
-    res.sendFile(path);
-});
-
-// GET /register
-router.get('/register', (req, res) => {
-    const path = viewDir + 'register.html';
-    res.sendFile(path);
-});
-
-// GET /login
-router.get('/login', (req, res) => {
-    const path = viewDir + 'login.html';
-    res.sendFile(path);
-});
-
-
-// GET /user/list
-router.get('/user/list', (req, res) => {
-    const path = viewDir + 'user/index.html';
-    return res.sendFile(path);
-});
-
-// GET /user/:id/edit
-router.get('/user/:id/edit', (req, res) => {
-    const path = viewDir + 'user/edit.html';
-    return res.sendFile(path);
-});
-
-// GET /feed
-router.get('/feed', (req, res) => {
-    const path = viewDir + 'feed/index.html';
-    return res.sendFile(path);
-});
+router.get('/', home);
+router.get('/register', register);
+router.get('/login', login);
+router.get('/user/list', userList);
+router.get('/user/:id/edit', userEdit);
 
 export default router;

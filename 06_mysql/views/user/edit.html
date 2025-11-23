@@ -9,11 +9,8 @@
 
 <main class="container mx-auto mt-8 px-4">
 
-  <div class="mx-auto bg-white p-6">
+  <section class="w-1/2 mx-auto bg-white p-6">
     <h2 class="text-2xl font-bold mb-6 text-center">User Edit</h2>
-
-    <!-- SQL文表示用 -->
-    <div id="sql" class="mb-4 p-4 bg-gray-100 rounded-lg text-sm"></div>
 
     <div class="my-2">
 
@@ -48,7 +45,16 @@
       </form>
 
     </div>
-  </div>
+  </section>
+
+  <section class="flex flex-col items-center justify-center">
+    <div class="w-full max-w-md p-8 bg-slate-50 rounded-2xl">
+      <h2 class="text-lg font-bold">Result</h2>
+      <div id="sql" class="text-sm text-gray-500 p-2"></div>
+      <div id="success" class="text-sm text-green-500 p-2"></div>
+      <div id="error" class="text-sm text-red-500 p-2"></div>
+    </div>
+  </section>
 
   <script src="/js/user/edit.js"></script>
 </main>

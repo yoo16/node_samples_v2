@@ -1,10 +1,10 @@
-const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
 
-loginForm.addEventListener("submit", async (e) => {
+registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    const uri = `/api/user/login`;
+    const uri = `/api/user/register`;
     document.getElementById("message").textContent = "";
     try {
         const res = await fetch(uri, {
@@ -17,7 +17,6 @@ loginForm.addEventListener("submit", async (e) => {
         const result = await res.json();
         const sql = result.sql;
         document.getElementById("sql").textContent = sql;
-        const authUser = result.authUser;
         const message = result.message;
         if (message) {
             document.getElementById("message").textContent = message;

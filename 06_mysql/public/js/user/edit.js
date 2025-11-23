@@ -13,6 +13,8 @@
         const res = await fetch(uri);
         const data = await res.json();
 
+        console.log(data);
+
         // ユーザーデータを取得
         const user = data.user;
         const sql = data.sql;
