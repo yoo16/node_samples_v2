@@ -1,6 +1,6 @@
-import { pool } from '../lib/db.js';
 import { viewDir } from '../lib/util.js';
 import * as userModel from '../models/User.js';
+import path from 'path';
 
 export const index = async (req, res) => {
     const path = viewDir + 'user/index.html';
@@ -27,38 +27,39 @@ export const find = async (req, res) => {
 }
 
 export const update = async (req, res) => {
+    // Multerミドルウェアで public/images/users/id.ext として保存
     const { name, email } = req.body;
     const id = req.params.id;
+
+    // avatar_url を生成
+    let avatar_url = null;
+    if (req.file) {
+        // req.file.filename : ${id}.${ext}
+        const ext = path.extname(req.file.filename);
+        avatar_url = `/images/users/${id}${ext}`;
+    }
+
     const updateUser = {
         name,
         email,
-        avatar_url: null,
+        avatar_url,
     };
-    const uploadFile = req.file ? req.file.filename : null;
-    // avatar upload
-    if (uploadFile) {
-        const ext = path.extname(uploadFile);
-        updateUser.avatar_url = `/images/users/${id}.${ext}`;
-        const uploadDir = `public/images/users/`;
 
-        const storage = multer.diskStorage({
-            destination: function (req, file, callback) {
-                callback(null, uploadDir);
-            },
-            filename: function (req, file, callback) {
-                callback(null, uploadFile);
-            },
-        });
-        const upload = multer({ storage: storage });
-        upload.single('avatar')(req, res, async (err) => {
-            if (err) {
-                console.log(err);
-            }
-        });
+    // 更新
+    const result = await userModel.update(id, updateUser);
+
+    // メッセージ
+    let message = "";
+    if (result.errors?.length === 0) {
+        message = "更新しました";
     }
 
-    const result = await userModel.update(id, updateUser);
-    result.endpoint = req.url;
-    res.json(result);
+    // JSON レスポンス
+    const data = {
+        sql: result.sql,
+        endpoint: req.url,
+        message,
+        errors: result.errors,
+    }
+    res.json(data);
 }
-

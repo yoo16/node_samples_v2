@@ -17,10 +17,11 @@ registerForm.addEventListener("submit", async (e) => {
         const result = await res.json();
         const sql = result.sql;
         document.getElementById("sql").textContent = sql;
-        const message = result.message;
-        if (message) {
-            document.getElementById("message").textContent = message;
-        }
+        document.getElementById("message").textContent = result.message;
+
+        console.log(result.errors)
+        // Errors
+        displayErrors(result.errors);
     } catch (error) {
         console.error(error);
     }

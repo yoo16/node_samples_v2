@@ -41,12 +41,13 @@ export const insert = async (posts) => {
         // 結果返却 JSON
         const result = {
             authUser: rows,
+            errors: [],
             sql: pool.format(sql, params),
         };
         return result;
     } catch (error) {
         const result = {
-            error: error.message,
+            errors: [{ msg: error.sqlMessage, }],
             sql: error.sql,
         };
         return result;
@@ -54,22 +55,33 @@ export const insert = async (posts) => {
 }
 
 export const update = async (id, posts) => {
-    const { name, email, avatar_url } = posts;
-    // SQL 文
-    const sql = `UPDATE users 
+    try {
+        const { name, email, avatar_url } = posts;
+        // SQL 文
+        const sql = `UPDATE users 
                 SET name = ?, email = ?, avatar_url = ? 
                 WHERE id = ?`;
-    // SQL 実行
-    const params = [name, email, avatar_url, id];
-    const [rows] = await pool.query(sql, params);
-    const user = rows[0];
+        // SQL 実行
+        const params = [name, email, avatar_url, id];
+        const [rows] = await pool.query(sql, params);
+        const user = rows[0];
 
-    // 結果返却
-    const result = {
-        user,
-        sql: pool.format(sql, params),
-    };
-    return result;
+        // 結果返却
+        const result = {
+            user,
+            message: "更新しました",
+            errors: [],
+            sql: pool.format(sql, params),
+        };
+        return result;
+    } catch (error) {
+        // console.log(error.sqlMessage);
+        const result = {
+            errors: [{ msg: error.sqlMessage, }],
+            sql: error.sql,
+        };
+        return result;
+    }
 }
 
 export const auth = async (email, password) => {

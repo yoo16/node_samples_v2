@@ -11,13 +11,21 @@ export const login = async (req, res) => {
     const result = await auth(email, password);
     const authUser = result.user;
     const sql = result.sql;
-    const message = authUser ? "Login successful" : "Login failed";
+
+    let message = "";
+    let errors = [];
+    if (authUser) {
+        message = "ログインに成功しました"
+    } else {
+        errors.push({ msg: "ログインに失敗しました" });
+    }
     // 結果返却 JSON
     const data = {
         authUser,
         sql,
         endpoint: req.url,
         message,
+        errors,
     };
     res.json(data);
 }

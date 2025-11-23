@@ -15,13 +15,18 @@ loginForm.addEventListener("submit", async (e) => {
             body: JSON.stringify(data),
         });
         const result = await res.json();
+
+        // SQL
         const sql = result.sql;
         document.getElementById("sql").textContent = sql;
-        const authUser = result.authUser;
+        // Message
         const message = result.message;
         if (message) {
             document.getElementById("message").textContent = message;
         }
+        const authUser = result.authUser;
+        // Errors
+        displayErrors(result?.errors);
     } catch (error) {
         console.error(error);
     }

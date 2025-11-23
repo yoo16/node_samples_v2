@@ -7,13 +7,16 @@ import {
 import { register } from '../controllers/RegisterController.js';
 import { login } from '../controllers/LoginController.js';
 import { registerValidationRules, validate } from '../middlewares/validator.js';
+import { upload } from '../lib/util.js';
+
 // Express Router
 const router = Router();
 
 // Routes
 router.get('/user/list', fetchAllUser);
 router.get('/user/:id/find', findUser);
-router.post('/user/:id/update', updateUser);
+router.post('/user/:id/update', upload.single('avatar'), updateUser);
+
 router.post('/user/login', login);
 router.post('/user/register', registerValidationRules, validate, register);
 

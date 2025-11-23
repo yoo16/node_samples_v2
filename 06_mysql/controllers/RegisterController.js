@@ -17,11 +17,13 @@ export const register = async (req, res) => {
         return res.json(data);
     }
     const result = await userModel.insert({ name, email, password });
-    const message = result.error ? result.error : 'Register success';
+    const message = result.errors.length > 0 ? 'ユーザ登録に失敗しました' : 'ユーザ登録に成功しました';
+    console.log("errors: ", result.errors);
 
     const data = {
         sql: result.sql,
         message,
+        errors: result.errors,
         endpoint: req.url,
     }
     return res.json(data);
