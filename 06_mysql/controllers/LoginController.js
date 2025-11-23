@@ -9,23 +9,16 @@ export const index = async (req, res) => {
 export const login = async (req, res) => {
     const { email, password } = req.body;
     const result = await auth(email, password);
-    const authUser = result.user;
-    const sql = result.sql;
 
-    let message = "";
-    let errors = [];
-    if (authUser) {
-        message = "ログインに成功しました"
-    } else {
-        errors.push({ msg: "ログインに失敗しました" });
-    }
+    const message = result.user ? "ログインに成功しました" : ""
+
     // 結果返却 JSON
     const data = {
-        authUser,
-        sql,
+        authUser: result.user,
+        sql: result.sql,
         endpoint: req.url,
         message,
-        errors,
+        errors: result.errors,
     };
     res.json(data);
 }

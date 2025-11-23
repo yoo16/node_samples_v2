@@ -15,18 +15,15 @@ loginForm.addEventListener("submit", async (e) => {
             body: JSON.stringify(data),
         });
         const result = await res.json();
+        console.log("errors: ", result.errors)
 
-        // SQL
-        const sql = result.sql;
-        document.getElementById("sql").textContent = sql;
-        // Message
-        const message = result.message;
-        if (message) {
-            document.getElementById("message").textContent = message;
-        }
-        const authUser = result.authUser;
         // Errors
-        displayErrors(result?.errors);
+        displayErrors(result.errors);
+        // Status
+        displayStatus(result);
+        // Custom
+        const userInfo = `${result.authUser?.name} (${result.authUser?.id})`;
+        document.getElementById("auth-user").textContent = userInfo;
     } catch (error) {
         console.error(error);
     }

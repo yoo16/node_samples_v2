@@ -7,18 +7,22 @@ export const index = async (req, res) => {
 }
 
 export const register = async (req, res) => {
-    const { name, email, password, confirm_password } = req.body;
-    if (password !== confirm_password) {
+    const { name, email, password } = req.body;
+    // 既存メールアドレスチェック
+    const { user, sql } = await userModel.findByEmail(email);
+    console.log("Exist User: ", user);
+    if (user) {
         const data = {
-            sql: '',
-            message: 'Password not match',
+            sql,
+            message: '',
             endpoint: req.url,
+            errors: [{ msg: 'メールアドレスは既に登録されています' }],
         }
         return res.json(data);
     }
+
     const result = await userModel.insert({ name, email, password });
-    const message = result.errors.length > 0 ? 'ユーザ登録に失敗しました' : 'ユーザ登録に成功しました';
-    console.log("errors: ", result.errors);
+    const message = result.errors.length === 0 ? 'ユーザ登録に成功しました' : '';
 
     const data = {
         sql: result.sql,

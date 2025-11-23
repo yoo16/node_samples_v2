@@ -15,13 +15,11 @@ registerForm.addEventListener("submit", async (e) => {
             body: JSON.stringify(data),
         });
         const result = await res.json();
-        const sql = result.sql;
-        document.getElementById("sql").textContent = sql;
-        document.getElementById("message").textContent = result.message;
 
-        console.log(result.errors)
         // Errors
         displayErrors(result.errors);
+        // Status
+        displayStatus(result);
     } catch (error) {
         console.error(error);
     }

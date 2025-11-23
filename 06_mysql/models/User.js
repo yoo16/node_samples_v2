@@ -28,6 +28,28 @@ export const find = async (id) => {
     return result;
 }
 
+export const findByEmail = async (email) => {
+    try {
+        // SQL 文
+        const sql = `SELECT * FROM users WHERE email = ?;`;
+        // SQL 実行
+        const [user] = await pool.query(sql, [email]);
+        // 結果返却 JSON
+        const result = {
+            user: user[0] || null,
+            sql: pool.format(sql, [email]),
+            errors: [],
+        };
+        return result;
+    } catch (error) {
+        const result = {
+            errors: [{ msg: error.sqlMessage, }],
+            sql: error.sql,
+        };
+        return result;
+    }
+}
+
 export const insert = async (posts) => {
     try {
         const { name, email, password } = posts;
@@ -75,7 +97,6 @@ export const update = async (id, posts) => {
         };
         return result;
     } catch (error) {
-        // console.log(error.sqlMessage);
         const result = {
             errors: [{ msg: error.sqlMessage, }],
             sql: error.sql,
@@ -85,19 +106,29 @@ export const update = async (id, posts) => {
 }
 
 export const auth = async (email, password) => {
-    // SQL 文
-    const sql = 'SELECT * FROM users WHERE email = ?';
-    // SQL 実行
-    const params = [email];
-    const [rows] = await pool.query(sql, params);
-    // ユーザー存在チェック
-    const existUser = rows.length > 0 ? rows[0] : null;
-    // パスワード照合
-    const isSuccess = await bcrypt.compare(password, existUser.password);
-    // 結果返却 JSON
-    const result = {
-        user: isSuccess ? existUser : null,
-        sql: sql,
-    };
-    return result;
+    try {
+        // SQL 文
+        const sql = 'SELECT * FROM users WHERE email = ?';
+        // SQL 実行
+        const params = [email];
+        const [rows] = await pool.query(sql, params);
+        // ユーザー存在チェック
+        const existUser = rows.length > 0 ? rows[0] : null;
+        // パスワード照合
+        const isSuccess = await bcrypt.compare(password, existUser.password);
+        const errors = isSuccess ? [] : [{ msg: "ログインに失敗しました" }];
+        // 結果返却 JSON
+        const result = {
+            user: isSuccess ? existUser : null,
+            sql: pool.format(sql, params),
+            errors,
+        };
+        return result;
+    } catch (error) {
+        const result = {
+            errors: [{ msg: error.sqlMessage, }],
+            sql: error.sql,
+        };
+        return result;
+    }
 }
