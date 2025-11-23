@@ -26,21 +26,6 @@ router.get('/login', (req, res) => {
     res.sendFile(path);
 });
 
-// POST /login
-router.post('/login', async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const authUser = await user.auth(email, password);
-    console.log('Authenticated User:', authUser);
-
-    if (authUser) {
-        res.redirect('/feed');
-    } else {
-        const path = viewDir + 'login.html';
-        return res.sendFile(path);
-    };
-});
 
 // GET /user/list
 router.get('/user/list', (req, res) => {

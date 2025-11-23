@@ -8,26 +8,31 @@
 </head>
 
 <main class="container mx-auto mt-8 px-4">
-  <div class="flex items-center justify-center">
+  <section class="flex items-center justify-center">
     <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-xl dark:bg-slate-800 m-4">
       <h1 class="text-2xl font-bold text-center">
         Login
       </h1>
-
       <form action="/login" method="post" class="mt-8 space-y-6" id="loginForm">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email-address" class="sr-only">Email address</label>
-            <input value="user1@test.com" id="email-address" name="email" type="email" autocomplete="email" required class="relative block w-full px-3 py-2 text-slate-900 placeholder-slate-500 border border-slate-300 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white" placeholder="email@example.com" />
+            <input value="user1@test.com" id="email-address" name="email" type="email" autocomplete="email" required
+              class="relative block w-full px-3 py-2 text-slate-900 placeholder-slate-500 border border-slate-300 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
+              placeholder="email@example.com" />
           </div>
           <div>
             <label for="password" class="sr-only">Password</label>
-            <input placeholder="pass1234" id="password" name="password" type="password" autocomplete="current-password" required class="relative block w-full px-3 py-2 text-slate-900 placeholder-slate-500 border border-slate-300 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white" placeholder="Password" />
+            <input placeholder="pass1234" id="password" name="password" type="password" autocomplete="current-password"
+              required
+              class="relative block w-full px-3 py-2 text-slate-900 placeholder-slate-500 border border-slate-300 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white"
+              placeholder="Password" />
           </div>
         </div>
 
         <div>
-          <button type="submit" class="group relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-sky-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+          <button type="submit"
+            class="group relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-sky-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
             Sign in
           </button>
           <div class="text-center text-sm text-gray-500 mt-4">
@@ -37,7 +42,18 @@
         </div>
       </form>
     </div>
-  </div>
+  </section>
+
+  <section class="flex flex-col items-center justify-center">
+    <div class="w-full max-w-md p-8 bg-slate-50 rounded-2xl">
+      <h2 class="text-lg font-bold">Result</h2>
+      <div id="sql" class="text-sm text-gray-500 p-2"></div>
+      <div id="success" class="text-sm text-green-500 p-2"></div>
+      <div id="error" class="text-sm text-red-500 p-2"></div>
+    </div>
+  </section>
+
+  <script src="/js/login.js"></script>
 </main>
 
 </html>
