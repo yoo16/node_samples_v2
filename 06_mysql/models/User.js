@@ -91,13 +91,13 @@ export const insert = async (posts) => {
 
 export const update = async (id, posts) => {
     try {
-        const { name, email, avatar_url } = posts;
+        const { name, email } = posts;
         // SQL 文
         const sql = `UPDATE users 
-                SET name = ?, email = ?, avatar_url = ? 
+                SET name = ?, email = ?
                 WHERE id = ?`;
         // SQL 実行
-        const params = [name, email, avatar_url, id];
+        const params = [name, email, id];
         const [rows] = await pool.query(sql, params);
         const user = rows[0];
 

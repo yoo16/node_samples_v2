@@ -1,5 +1,5 @@
 
-(async () => {
+async function loadUser() {
     const userEdit = document.getElementById("user-edit");
     const idInput = document.getElementById("id");
 
@@ -22,41 +22,31 @@
         // id を input hidden にセット
         idInput.value = id;
 
-        // Avatar Preview
-        document.getElementById("avatar-preview").src = user.avatar_url;
-        document.getElementById("avatar-preview").addEventListener("error", () => {
-            document.getElementById("avatar-preview").src = "/images/no-avatar.png"
-        });
-
-        // SQL を表示
-        document.getElementById("sql").textContent = data.sql;
+        displayStatus(data, uri);
     } catch (err) {
         console.error("Load User Failed:", err);
     }
-})();
+}
 
 // 更新処理
 document.getElementById("user-edit").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    const uri = `/api/user/${data.id}/update`;
+    const entries = Object.fromEntries(formData.entries());
+    const uri = `/api/user/${entries.id}/update`;
     const res = await fetch(uri, {
         method: "POST",
         body: formData,
     });
-    const result = await res.json();
-    console.log(result);
-    const sql = result.sql;
-    document.getElementById("sql").textContent = sql;
-    document.getElementById("message").textContent = result.message;
+    const data = await res.json();
 
-    displayErrors(result.errors);
+    displayStatus(data, uri);
+    displayErrors(data.errors);
 });
 
-// Avatar Preview
-document.getElementById("avatar").addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    document.getElementById("avatar-preview").src = URL.createObjectURL(file);
+// 再読み込み
+document.getElementById("reload-btn").addEventListener("click", () => {
+    loadUser();
 });
+
+loadUser();

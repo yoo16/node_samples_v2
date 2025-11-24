@@ -1,5 +1,5 @@
 import { viewDir } from '../lib/util.js';
-import { auth } from '../models/User.js';
+import * as User from '../models/User.js';
 
 export const index = async (req, res) => {
     const path = viewDir + 'login.html';
@@ -8,7 +8,7 @@ export const index = async (req, res) => {
 
 export const auth = async (req, res) => {
     const { email, password } = req.body;
-    const result = await auth(email, password);
+    const result = await User.auth(email, password);
 
     const message = result.user ? "ログインに成功しました" : ""
 
@@ -16,7 +16,6 @@ export const auth = async (req, res) => {
     const data = {
         authUser: result.user,
         sql: result.sql,
-        endpoint: req.url,
         message,
         errors: result.errors,
     };

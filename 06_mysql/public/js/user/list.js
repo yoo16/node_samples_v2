@@ -7,10 +7,6 @@
         const data = await res.json();
 
         const users = data.users;
-        const sql = data.sql;
-
-        // SQL 表示
-        document.getElementById("sql").textContent = sql;
 
         // Tailwind カードで表示
         userList.innerHTML = users.map(user => `
@@ -24,13 +20,13 @@
                     <a href="/user/${user.id}/edit" class="text-blue-500 hover:underline">
                         <span class="font-medium">id:</span> ${user.id}
                     </a>
-                    <div><span class="font-medium">avatar_url:</span>${user.avatar_url}</div>
                     <div><span class="font-medium">created_at:</span> ${user.created_at}</div>
                 </div>
 
             </div>
         `).join("");
 
+        displayStatus(data, uri);
     } catch (err) {
         console.error("Load Users Failed:", err);
     }

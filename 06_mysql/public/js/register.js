@@ -19,7 +19,7 @@ registerForm.addEventListener("submit", async (e) => {
         // Errors
         displayErrors(result.errors);
         // Status
-        displayStatus(result);
+        displayStatus(result, uri);
     } catch (error) {
         console.error(error);
     }

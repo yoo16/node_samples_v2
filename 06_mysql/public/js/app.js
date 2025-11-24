@@ -11,10 +11,10 @@ function displayErrors(errors) {
     });
 }
 
-function displayStatus(result) {
+function displayStatus(result, endpoint) {
     if (!result) return;
     // Endpoint
-    document.getElementById("endpoint").textContent = result.endpoint;
+    document.getElementById("endpoint").textContent = endpoint;
     // SQL
     document.getElementById("sql").textContent = result.sql;
     // Message

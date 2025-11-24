@@ -20,7 +20,7 @@ loginForm.addEventListener("submit", async (e) => {
         // Errors
         displayErrors(result.errors);
         // Status
-        displayStatus(result);
+        displayStatus(result, uri);
         // Custom
         const userInfo = `${result.authUser?.name} (${result.authUser?.id})`;
         document.getElementById("auth-user").textContent = userInfo;

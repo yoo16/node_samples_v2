@@ -15,7 +15,6 @@ export const register = async (req, res) => {
         const data = {
             sql,
             message: '',
-            endpoint: req.url,
             errors: [{ msg: 'メールアドレスは既に登録されています' }],
         }
         return res.json(data);
@@ -29,7 +28,6 @@ export const register = async (req, res) => {
         sql: result.sql,
         message,
         errors: result.errors,
-        endpoint: req.url,
     }
     return res.json(data);
 }
