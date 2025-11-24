@@ -21,6 +21,7 @@ export const register = async (req, res) => {
         return res.json(data);
     }
 
+    // ユーザ登録
     const result = await userModel.insert({ name, email, password });
     const message = result.errors.length === 0 ? 'ユーザ登録に成功しました' : '';
 

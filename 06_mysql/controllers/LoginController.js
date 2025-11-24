@@ -6,7 +6,7 @@ export const index = async (req, res) => {
     return res.sendFile(path);
 }
 
-export const login = async (req, res) => {
+export const auth = async (req, res) => {
     const { email, password } = req.body;
     const result = await auth(email, password);
 
