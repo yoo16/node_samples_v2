@@ -45,7 +45,7 @@ const selectFeeds = async () => {
     console.table(rows)
 };
 
-const selectFeedsByUserId = async () => {
+const searchFeeds = async () => {
     const sql = `SELECT users.name,
                         feeds.content, 
                         feeds.created_at

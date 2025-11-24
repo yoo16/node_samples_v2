@@ -7,6 +7,7 @@ import {
     index as userList,
     edit as userEdit
 } from '../controllers/UserController.js';
+import { index as sqlClient } from '../controllers/SQLController.js';
 
 // Express Router インスタンス生成 
 const router = Router();
@@ -14,6 +15,7 @@ const router = Router();
 // --- ルーティング ---
 router.get('/', home);
 router.get('/register', register);
+router.get('/sql-client', sqlClient);
 router.get('/login', login);
 router.get('/user/list', userList);
 router.get('/user/:id/edit', userEdit);

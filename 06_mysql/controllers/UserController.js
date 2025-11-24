@@ -13,46 +13,40 @@ export const edit = async (req, res) => {
 }
 
 // API
-export const fetchAll = async (req, res) => {
+export const apiList = async (req, res) => {
     const result = await userModel.fetchAll();
     result.endpoint = req.url;
     res.json(result);
 }
 
-export const find = async (req, res) => {
+export const apiFind = async (req, res) => {
     const id = req.params.id;
     const result = await userModel.find(id);
     result.endpoint = req.url;
     res.json(result);
 }
 
-export const update = async (req, res) => {
+export const apiUpdate = async (req, res) => {
     // Multerミドルウェアで public/images/users/id.ext として保存
-    const { name, email } = req.body;
+    const updateUser = req.body;
     const id = req.params.id;
 
-    // avatar_url を生成
-    let avatar_url = null;
-    if (req.file) {
-        // req.file.filename : ${id}.${ext}
-        const ext = path.extname(req.file.filename);
-        avatar_url = `/images/users/${id}${ext}`;
-    }
+    // 既存のユーザーを取得
+    let result = await userModel.find(id);
+    const existUser = result.user;
+    updateUser.avatar_url = existUser.avatar_url;
 
-    const updateUser = {
-        name,
-        email,
-        avatar_url,
-    };
+    // avatar_url を生成
+    if (req.file?.filename) {
+        const ext = path.extname(req.file.filename);
+        updateUser.avatar_url = `/images/users/${id}${ext}`;
+    }
 
     // 更新
-    const result = await userModel.update(id, updateUser);
+    result = await userModel.update(id, updateUser);
 
     // メッセージ
-    let message = "";
-    if (result.errors?.length === 0) {
-        message = "更新しました";
-    }
+    let message = (result.errors?.length === 0) ? "更新しました" : "更新できませんでした";
 
     // JSON レスポンス
     const data = {

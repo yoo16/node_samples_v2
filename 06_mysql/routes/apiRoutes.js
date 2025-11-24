@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import {
-    fetchAll as fetchAllUser,
-    find as findUser,
-    update as updateUser,
-} from '../controllers/UserController.js';
+import { apiList, apiFind, apiUpdate } from '../controllers/UserController.js';
 import { register } from '../controllers/RegisterController.js';
 import { login } from '../controllers/LoginController.js';
 import { registerValidationRules, validate } from '../middlewares/validator.js';
@@ -13,9 +9,9 @@ import { upload } from '../lib/util.js';
 const router = Router();
 
 // Routes
-router.get('/user/list', fetchAllUser);
-router.get('/user/:id/find', findUser);
-router.post('/user/:id/update', upload.single('avatar'), updateUser);
+router.get('/user/list', apiList);
+router.get('/user/:id/find', apiFind);
+router.post('/user/:id/update', upload.single('avatar'), apiUpdate);
 
 router.post('/user/login', login);
 router.post('/user/register', registerValidationRules, validate, register);

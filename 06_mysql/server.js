@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 // ルーターのインポート
 import routes from './routes/routes.js';
 import apiRoutes from './routes/apiRoutes.js';
+import sqlRoutes from './routes/sqlRoutes.js';
 
 // 環境変数の設定
 dotenv.config();
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/', routes);
 app.use('/api', apiRoutes);
+app.use('/api', sqlRoutes);
 
 app.listen(port, host, () => {
     console.log(`Server is running on http://${host}:${port}`);

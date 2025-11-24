@@ -1,15 +1,14 @@
 import { pool } from '../lib/db.js';
 import * as bcrypt from 'bcrypt';
 
-export const fetchAll = async () => {
+export const fetchAll = async (limit = 20) => {
     // SQL 文
     const sql = `SELECT * FROM users LIMIT ?;`;
-    const limit = 20;
     // SQL 実行
-    const [users] = await pool.query(sql, [limit]);
+    const [rows] = await pool.query(sql, [limit]);
     // 結果返却
     const result = {
-        users,
+        users: rows,
         sql: pool.format(sql, [limit]),
     };
     return result;
@@ -19,11 +18,24 @@ export const find = async (id) => {
     // SQL 文
     const sql = `SELECT * FROM users WHERE id = ?;`;
     // SQL 実行
-    const [user] = await pool.query(sql, [id]);
+    const [rows] = await pool.query(sql, [id]);
     // 結果返却 JSON
     const result = {
-        user: user[0],
+        user: rows[0],
         sql: pool.format(sql, [id]),
+    };
+    return result;
+}
+
+export const count = async () => {
+    // SQL 文
+    const sql = `SELECT COUNT(id) as count FROM users;`;
+    // SQL 実行
+    const [rows] = await pool.query(sql);
+    // 結果返却
+    const result = {
+        count: rows[0].count,
+        sql: pool.format(sql),
     };
     return result;
 }
@@ -33,10 +45,11 @@ export const findByEmail = async (email) => {
         // SQL 文
         const sql = `SELECT * FROM users WHERE email = ?;`;
         // SQL 実行
-        const [user] = await pool.query(sql, [email]);
+        const [rows] = await pool.query(sql, [email]);
+        console.log(rows);
         // 結果返却 JSON
         const result = {
-            user: user[0] || null,
+            users: rows,
             sql: pool.format(sql, [email]),
             errors: [],
         };
