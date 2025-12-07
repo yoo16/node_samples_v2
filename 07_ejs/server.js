@@ -25,7 +25,7 @@ app.set('layout', 'layout');
 
 // EJS を使用する
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'src', 'views'));
 
 // 静的コンテンツの公開
 app.use(express.static('public'));

@@ -16,7 +16,7 @@ const Like = (likeData) => {
 
     const getDetails = () => {
         return items.map(id => {
-            return Product.find(id);
+            return Product().find(id);
         }).filter(item => item !== undefined);
     };
 

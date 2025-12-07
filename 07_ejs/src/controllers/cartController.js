@@ -39,7 +39,7 @@ const remove = (req, res) => {
     const { productId } = req.body;
     if (req.session.cart) {
         // カートから商品を削除
-        req.session.cart = req.session.cart.filter(item => item.productId !== productId);
+        req.session.cart = Cart(req.session.cart).remove(productId);
     }
     res.redirect('/cart');
 };

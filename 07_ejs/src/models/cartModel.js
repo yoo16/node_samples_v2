@@ -22,7 +22,7 @@ const Cart = (cartData) => {
     // 表示用に商品詳細情報を含めたリストを取得
     const getDetails = () => {
         return items.map(item => {
-            const product = Product.find(item.productId);
+            const product = Product().find(item.productId);
             if (!product) return null;
             return {
                 ...item,
