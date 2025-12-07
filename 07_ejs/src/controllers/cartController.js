@@ -34,6 +34,7 @@ const add = (req, res) => {
 };
 
 // カートから商品を削除
+// カートから商品を削除
 const remove = (req, res) => {
     const { productId } = req.body;
     if (req.session.cart) {
@@ -43,8 +44,34 @@ const remove = (req, res) => {
     res.redirect('/cart');
 };
 
+const payment = (req, res) => {
+    if (!req.session.cart || req.session.cart.length === 0) {
+        return res.redirect('/cart');
+    }
+
+    const cart = Cart(req.session.cart);
+    const total = cart.getTotalPrice();
+
+    res.render('cart/payment', {
+        total
+    });
+};
+
+const checkout = (req, res) => {
+    // Clear the cart
+    req.session.cart = [];
+    res.redirect('/cart/complete');
+};
+
+const complete = (req, res) => {
+    res.render('cart/complete');
+};
+
 export default {
     index,
     add,
-    remove
+    remove,
+    payment,
+    checkout,
+    complete
 };

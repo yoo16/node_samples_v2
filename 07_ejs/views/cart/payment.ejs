@@ -1,0 +1,32 @@
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h1 class="text-3xl font-bold mb-8 text-slate-900 border-b pb-4">Payment</h1>
+
+    <div class="bg-gray-50 rounded-2xl p-8 mb-8 border border-gray-100">
+        <h2 class="text-xl font-bold mb-4">注文内容</h2>
+        <div class="flex justify-between items-center text-lg mb-2">
+            <span class="text-gray-600">合計金額</span>
+            <span class="font-bold text-slate-900">&yen;<%= total.toLocaleString() %></span>
+        </div>
+    </div>
+
+    <form action="/cart/checkout" method="POST" class="flex flex-col gap-4">
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <h3 class="font-bold mb-4 text-gray-800">支払い方法</h3>
+            <div class="flex items-center gap-3 p-3 border rounded-lg border-sky-200 bg-sky-50">
+                <input type="radio" name="payment_method" id="card" value="card" checked class="w-4 h-4 text-sky-600">
+                <label for="card" class="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
+                    クレジットカード
+                </label>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-4 mt-4">
+            <a href="/cart" class="px-6 py-3 rounded-xl border border-gray-300 text-gray-600 font-bold hover:bg-gray-50 transition">
+                Back to Cart
+            </a>
+            <button type="submit" class="px-8 py-3 rounded-xl bg-sky-600 text-white font-bold shadow-lg hover:shadow-xl hover:bg-sky-700 transition transform hover:-translate-y-0.5">
+                Pay &yen;<%= total.toLocaleString() %>
+            </button>
+        </div>
+    </form>
+</div>

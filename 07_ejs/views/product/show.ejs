@@ -89,8 +89,8 @@
                     </form>
                     <% } %>
 
-                    <button class="like-button flex-none bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 text-gray-400 font-bold p-4 rounded-xl transition-all group" data-like-type="product" data-id="<%= product.id %>">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-none stroke-current transition-colors" viewBox="0 0 24 24" stroke="currentColor">
+                    <button class="like-button flex-none bg-white text-gray-400 font-bold p-4 rounded-xl transition-all group" data-like-type="product" data-id="<%= product.id %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </button>
@@ -114,38 +114,6 @@
             </div>
         </div>
     </div>
-    </div>
 </main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const minusBtn = document.querySelector('.quantity-minus');
-        const plusBtn = document.querySelector('.quantity-plus');
-        const input = document.querySelector('input[name="quantity"]'); // Visible input
-        const hiddenInput = document.getElementById('hidden-quantity'); // Hidden input in form
-
-        const updateHidden = () => {
-            if (hiddenInput && input) {
-                hiddenInput.value = input.value;
-            }
-        };
-
-        if (minusBtn && plusBtn && input) {
-            minusBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                let val = parseInt(input.value);
-                if (val > 1) {
-                    input.value = val - 1;
-                    updateHidden();
-                }
-            });
-
-            plusBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                let val = parseInt(input.value);
-                input.value = val + 1;
-                updateHidden();
-            });
-        }
-    });
-</script>
+<script src="/js/cart.js"></script>
