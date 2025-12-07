@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= siteTitle %></title>
+    <!-- Tailwindcss cdn -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/default.css">
+</head>
+
+<body class="bg-white min-h-screen flex flex-col font-sans text-slate-900">
+    <%- include('partials/nav') %>
+
+    <!-- Main Content -->
+    <main class="w-full mx-auto">
+        <%- body %>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+
+</html>

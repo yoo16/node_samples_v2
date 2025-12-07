@@ -1,5 +1,3 @@
-// database/migrate.js
-import fs from 'fs';
 import dotenv from 'dotenv';
 import { pool } from './lib/db.js';
 
@@ -7,7 +5,7 @@ dotenv.config();
 
 const database = process.env.DB_DATABASE;
 
-async function truncate() {
+async function drop() {
     try {
         const sql = `DROP DATABASE IF EXISTS ${database};`;
         console.log("Running drop database...");
@@ -20,4 +18,6 @@ async function truncate() {
     }
 }
 
-truncate();
+(async () => {
+    await drop();
+})();

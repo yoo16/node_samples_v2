@@ -2,8 +2,10 @@ import { pool } from '../lib/db.js';
 import * as bcrypt from 'bcrypt';
 
 export const fetchAll = async (limit = 20) => {
-    // SQL 文
-    const sql = `SELECT * FROM users LIMIT ?;`;
+    // TODO: SQL 文
+    // 1) users 取得、
+    // 2) 指定した limit で件数制限
+    const sql = `SELECT * FROM users LIMIT ?`;
     // SQL 実行
     const [rows] = await pool.query(sql, [limit]);
     // 結果返却
@@ -15,8 +17,9 @@ export const fetchAll = async (limit = 20) => {
 }
 
 export const find = async (id) => {
-    // SQL 文
-    const sql = `SELECT * FROM users WHERE id = ?;`;
+    // TODO: SQL 文
+    // users テーブルから id 指定で取得
+    const sql = `SELECT * FROM users WHERE id = ?`;
     // SQL 実行
     const [rows] = await pool.query(sql, [id]);
     // 結果返却 JSON
@@ -28,8 +31,9 @@ export const find = async (id) => {
 }
 
 export const count = async () => {
-    // SQL 文
-    const sql = `SELECT COUNT(id) as count FROM users;`;
+    // TODO: SQL 文
+    // users テーブルの件数を取得
+    const sql = ``;
     // SQL 実行
     const [rows] = await pool.query(sql);
     // 結果返却
@@ -42,36 +46,30 @@ export const count = async () => {
 
 export const findByEmail = async (email) => {
     try {
-        // SQL 文
-        const sql = `SELECT * FROM users WHERE email = ?;`;
-        // SQL 実行
-        const [rows] = await pool.query(sql, [email]);
-        console.log(rows);
-        // 結果返却 JSON
-        const result = {
-            users: rows,
-            sql: pool.format(sql, [email]),
-            errors: [],
-        };
-        return result;
+        // TODO: SQL 文
+        // users テーブルから email 指定で取得
+        const sql = `SELECT * FROM users WHERE email = ?`;
+        // TODO: パラメータ配列
+        const params = [email];
+        const result = await pool.query(sql, params);
+        const users = result[0];
+        return users[0];
     } catch (error) {
-        const result = {
-            errors: [{ msg: error.sqlMessage, }],
-            sql: error.sql,
-        };
-        return result;
+        console.error('Error in findByEmail:', error);
     }
 }
 
 export const insert = async (posts) => {
     try {
         const { name, email, password } = posts;
-        // SQL 文
-        const sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
         // パスワードハッシュ
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // TODO: SQL 文
+        // users テーブルに name, email, password を挿入
+        const sql = `INSERT INTO users (name, email, password) 
+                        VALUES (?, ?, ?)`;
+        // TODO: パラメータ配列
+        const params = [name, email, password];
         // SQL 実行
-        const params = [name, email, hashedPassword];
         const [rows] = await pool.query(sql, params);
         // 結果返却 JSON
         const result = {
@@ -92,10 +90,10 @@ export const insert = async (posts) => {
 export const update = async (id, posts) => {
     try {
         const { name, email } = posts;
-        // SQL 文
-        const sql = `UPDATE users 
-                SET name = ?, email = ?
-                WHERE id = ?`;
+        // TODO: SQL 文
+        // 1) UPDATE 文で users の name, email を更新
+        // 2) users.id で検索
+        const sql = `UPDATE users SET name = ?, email = ? WHERE id = ?`;
         // SQL 実行
         const params = [name, email, id];
         const [rows] = await pool.query(sql, params);
@@ -120,23 +118,22 @@ export const update = async (id, posts) => {
 
 export const auth = async (email, password) => {
     try {
-        // SQL 文
-        const sql = 'SELECT * FROM users WHERE email = ?';
-        // SQL 実行
-        const params = [email];
-        const [rows] = await pool.query(sql, params);
         // ユーザー存在チェック
-        const existUser = rows.length > 0 ? rows[0] : null;
+        const existUser = findByEmail(email);
         // パスワード照合
-        const isSuccess = await bcrypt.compare(password, existUser.password);
-        const errors = isSuccess ? [] : [{ msg: "ログインに失敗しました" }];
-        // 結果返却 JSON
-        const result = {
-            user: isSuccess ? existUser : null,
-            sql: pool.format(sql, params),
-            errors,
-        };
-        return result;
+        if (existUser && bcrypt.compareSync(password, existsUser.password)) {
+            return {
+                user: existUser,
+                sql: "",
+                errors,
+            };
+        } else {
+            return {
+                user: null,
+                sql: "",
+                errors: [{ msg: "ログインに失敗しました" }],
+            }
+        }
     } catch (error) {
         const result = {
             errors: [{ msg: error.sqlMessage, }],

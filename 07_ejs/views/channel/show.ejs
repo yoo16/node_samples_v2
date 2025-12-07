@@ -1,0 +1,72 @@
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+    <nav class="mb-8 text-sm text-gray-500">
+        <a href="/" class="hover:text-sky-600 transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/channels" class="hover:text-sky-600 transition-colors">Channel</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900 font-medium truncate"><%= channel.name %></span>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+        <div class="lg:col-span-5 xl:col-span-4">
+            <div class="relative rounded-2xl overflow-hidden shadow-lg ring-1 ring-gray-900/5 group">
+                <img src="<%= channel.image %>"
+                    alt="<%= channel.name %>"
+                    class="w-full h-auto object-cover aspect-[3/4] group-hover:scale-105 transition-transform duration-500">
+
+                <% if (channel.status === 'on_air') { %>
+                <div class="absolute top-4 left-4 px-3 py-1 bg-red-600 text-white text-xs font-bold uppercase tracking-wider rounded-full shadow-md animate-pulse">
+                    On Air
+                </div>
+                <% } else if (channel.status === 'coming_soon') { %>
+                <div class="absolute top-4 left-4 px-3 py-1 bg-sky-600 text-white text-xs font-bold uppercase tracking-wider rounded-full shadow-md">
+                    Coming Soon
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7 xl:col-span-8 flex flex-col h-full">
+
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-6 leading-tight">
+                <%= channel.name %>
+            </h1>
+
+            <div class="mb-4 flex items-center gap-3">
+                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-700/10">
+                    Cast
+                </span>
+                <span class="text-sm text-gray-700">
+                    <%= channel.cast %>
+                </span>
+            </div>
+
+            <div class="prose prose-slate max-w-none text-gray-600 leading-relaxed mb-8">
+                <p><%= channel.description %></p>
+            </div>
+
+            <div class="mt-auto pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-4">
+                <% if (channel.status === 'on_air') { %>
+                <button class="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group">
+                    <img src="/svg/play.svg" class="w-6 h-6 fill-current text-white">
+                    <span>今すぐ再生する</span>
+                </button>
+                <% } else if (channel.status === 'coming_soon') { %>
+                <button class="flex-1 sm:flex-none bg-white border border-gray-200 font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2">
+                    <span>オンエアまでお待ちください</span>
+                </button>
+                <% } %>
+
+                <button class="flex-1 sm:flex-none bg-white border border-gray-200 text-gray-700 font-semibold py-3.5 px-6 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    お気に入り
+                </button>
+            </div>
+
+        </div>
+    </div>
+</main>

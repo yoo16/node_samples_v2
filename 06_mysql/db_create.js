@@ -1,8 +1,6 @@
+// DB接続プール(DB指定なし)
 import { poolRoot } from './lib/db.js';
 import fs from 'fs';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 async function createDatabase(filePath) {
     // schema.sql の読み込み
@@ -26,4 +24,6 @@ async function createDatabase(filePath) {
     }
 }
 
-createDatabase('./database/schema.sql');
+(async () => {
+    await createDatabase('./database/schema.sql');
+})();

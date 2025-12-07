@@ -2,10 +2,9 @@ import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 // __dirname を使えるようにする（ESM対策）
-const __filename = fileURLToPath(import.meta.url);
+const __filename = path.resolve();
 const __dirname = path.dirname(__filename);
 
 const sqlDir = path.join(__dirname);

@@ -1,0 +1,33 @@
+<div
+    class="group relative bg-white rounded-none shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer border border-transparent hover:border-slate-100">
+    <!-- Image -->
+    <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200 relative">
+        <a href="/channels/<%= channel.id %>">
+            <img src="<%= channel.image %>" alt="<%= channel.name %>"
+                class="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity duration-300">
+        </a>
+
+        <% if (channel.status==='coming_soon' ) { %>
+        <div class="absolute bottom-0 left-0 bg-sky-500 text-white text-xs font-bold px-3 py-1">
+            COMING SOON
+        </div>
+        <% } else if (channel.status==='on_air' ) { %>
+        <div class="absolute bottom-0 left-0 bg-pink-600 text-white text-xs font-bold px-3 py-1">
+            ON AIR
+        </div>
+        <% } %>
+    </div>
+
+    <!-- Content -->
+    <div class="mt-4 px-2 pb-4">
+        <h3 class="text-md font-bold text-gray-700 line-clamp-2 min-h-[40px] group-hover:text-sky-600 transition-colors">
+            <a href="/channels/<%= channel.id %>"><%= channel.name %></a>
+        </h3>
+        <p class="mt-1 py-2 text-xs text-gray-900">
+            <%= channel.cast %>
+        </p>
+        <p class="mt-1 text-sm text-gray-500 line-clamp-1">
+            <%= channel.description %>
+        </p>
+    </div>
+</div>

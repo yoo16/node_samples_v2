@@ -1,0 +1,112 @@
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+    <nav class="mb-8 text-sm text-gray-500">
+        <a href="/" class="hover:text-sky-600 transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/products" class="hover:text-sky-600 transition-colors">Products</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900 font-medium truncate"><%= product.name %></span>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+        <div class="space-y-4">
+            <div class="aspect-square bg-white overflow-hidden shadow-sm relative group">
+                <% if (product.status === 'new') { %>
+                <span class="absolute top-4 left-4 bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">
+                    NEW
+                </span>
+                <% } else if (product.status === 'coming_soon') { %>
+                <span class="absolute top-4 left-4 bg-sky-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">
+                    COMING SOON
+                </span>
+                <% } %>
+
+                <img src="<%= product.image %>"
+                    alt="<%= product.name %>"
+                    class="w-full h-full object-contain p-8 group-hover:scale-105 transition-transform duration-500">
+            </div>
+
+        </div>
+
+        <div class="flex flex-col h-full">
+
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
+                <%= product.name %>
+            </h1>
+
+            <div class="mb-2">
+                <span class="px-3 py-1 text-xs bg-gray-100 text-gray-700 font-medium px-2 py-1 rounded-full">
+                    <%= categories[product.category] %>
+                </span>
+            </div>
+
+            <div class="flex items-baseline gap-4 mb-8">
+                <span class="text-3xl font-bold text-slate-900"><%= product.price %></span>
+                <span class="text-sm text-gray-500 font-medium">(税込)</span>
+            </div>
+
+            <div class="prose prose-slate max-w-none text-gray-600 mb-8 border-b border-gray-100 pb-8">
+                <p>
+                    <%= product.description || "人気ライバーのオリジナルグッズが登場。高品質な素材を使用し、コレクションにも普段使いにも最適なアイテムです。" %>
+                </p>
+                <ul class="text-sm mt-4 list-disc list-inside text-gray-500">
+                    <li>サイズ: フリー</li>
+                    <li>素材: 詳細はパッケージに記載</li>
+                    <li>発送予定: 3営業日以内</li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+
+                <% if (product.status !== 'coming_soon') { %>
+                <div class="flex items-center gap-4">
+                    <label class="text-sm font-bold text-gray-700">数量</label>
+                    <div class="flex items-center border border-gray-300 rounded-lg">
+                        <button class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-l-lg transition">-</button>
+                        <input type="text" value="1" class="w-12 h-10 text-center border-0 focus:ring-0 font-bold text-slate-900" readonly>
+                        <button class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-r-lg transition">+</button>
+                    </div>
+                </div>
+                <% } %>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <% if (product.status === 'coming_soon') { %>
+                    <button disabled class="flex-1 bg-gray-300 text-white font-bold py-4 px-6 rounded-xl cursor-not-allowed flex items-center justify-center gap-2">
+                        <span>販売開始までお待ちください</span>
+                    </button>
+                    <% } else { %>
+                    <button class="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <span>カートに入れる</span>
+                    </button>
+                    <% } %>
+
+                    <button class="flex-none bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 text-gray-400 font-bold p-4 rounded-xl transition-all group">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="flex gap-4 pt-4 text-xs text-gray-500">
+                    <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>在庫あり</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                        <span>公式グッズ</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

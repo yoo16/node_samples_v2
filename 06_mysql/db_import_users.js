@@ -21,10 +21,12 @@ async function insert(filePath) {
         await pool.query(sql);
         console.log("✔ Migration completed!");
     } catch (err) {
-        console.error("❌ Migration error:", err);
+        console.error("❌ Import error:");
     } finally {
         await pool.end();
     }
 }
 
-insert('./database/insert_users.sql');
+(async () => {
+    await insert('./database/insert_users.sql');
+})();

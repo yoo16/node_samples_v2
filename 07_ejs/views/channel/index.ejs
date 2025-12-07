@@ -1,0 +1,9 @@
+<section class="space-y-8">
+    <h2 class="p-3 text-center text-3xl font-bold">Channel</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10">
+        <% channels.forEach(channel=> { %>
+        <%- include('../partials/channel', { channel: channel }) %>
+        <% }) %>
+    </div>
+</section>

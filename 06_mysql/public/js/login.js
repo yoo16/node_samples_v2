@@ -16,6 +16,7 @@ loginForm.addEventListener("submit", async (e) => {
         });
         const result = await res.json();
         console.log("errors: ", result.errors)
+        console.log("message: ", result.message)
 
         // Errors
         displayErrors(result.errors);
