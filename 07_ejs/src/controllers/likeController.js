@@ -1,6 +1,6 @@
-
-import Like from '../models/likeModel.js';
+// mock data
 import { categories } from '../data/testCategories.js';
+import Like from '../models/likeModel.js';
 
 const index = (req, res) => {
     const like = Like(req.session.likes);

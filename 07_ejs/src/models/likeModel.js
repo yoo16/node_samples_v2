@@ -1,4 +1,4 @@
-
+// mock data
 import Product from './productModel.js';
 
 const Like = (likeData) => {

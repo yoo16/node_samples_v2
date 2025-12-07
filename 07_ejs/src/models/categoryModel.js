@@ -1,12 +1,21 @@
-// Dummy product data
+// mock data
 import { categories } from '../data/testCategories.js';
 
-const fetchAll = () => {
-    return categories;
+const Category = () => {
+    let items = categories || [];
+
+    const fetchAll = () => {
+        return items;
+    }
+
+    const find = (key) => {
+        return items[key];
+    }
+
+    return {
+        fetchAll,
+        find
+    };
 }
 
-const find = (key) => {
-    return categories[key];
-}
-
-export default { fetchAll, find };
+export default Category;

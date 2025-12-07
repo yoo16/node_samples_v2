@@ -1,16 +1,26 @@
-// Dummy product data
+// mock data
 import { channels } from '../data/testChannel.js';
 
-const latests = (limit = 3) => {
-    return channels.slice(0, limit);
+const Channel = () => {
+    let items = channels || [];
+
+    const latests = (limit = 3) => {
+        return items.slice(0, limit);
+    }
+
+    const fetchAll = () => {
+        return items;
+    }
+
+    const find = (id) => {
+        return items.find(channel => channel.id == id);
+    }
+
+    return {
+        latests,
+        fetchAll,
+        find
+    };
 }
 
-const fetchAll = () => {
-    return channels;
-}
-
-const find = (id) => {
-    return channels.find(channel => channel.id == id);
-}
-
-export default { fetchAll, latests, find };
+export default Channel;
