@@ -1,0 +1,18 @@
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <table class="w-full text-left">
+        <thead class="bg-gray-50 text-gray-800 font-medium border-b border-gray-100 hidden md:table-header-group">
+            <tr>
+                <th class="p-6">商品</th>
+                <th class="p-6">価格</th>
+                <th class="p-6">数量</th>
+                <th class="p-6">小計</th>
+                <th class="p-6"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            <% cartItems.forEach(item => { %>
+            <%- include('./cart', { item }) %>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

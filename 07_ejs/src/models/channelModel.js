@@ -1,8 +1,8 @@
 // Dummy product data
 import { channels } from '../data/testChannel.js';
 
-const latests = () => {
-    return channels.slice(0, 4);
+const latests = (limit = 3) => {
+    return channels.slice(0, limit);
 }
 
 const fetchAll = () => {

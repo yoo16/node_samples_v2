@@ -1,0 +1,20 @@
+<%- include('../partials/hero') %>
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Liked Items</h1>
+
+    <% if (likedItems.length === 0) { %>
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg mb-4">No liked items yet.</p>
+        <a href="/" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            Continue Shopping
+        </a>
+    </div>
+    <% } else { %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <% likedItems.forEach(product => { %>
+        <%- include('../partials/product', { product, categories }) %>
+        <% }); %>
+    </div>
+    <% } %>
+</div>

@@ -42,7 +42,7 @@
             </div>
 
             <div class="flex items-baseline gap-4 mb-8">
-                <span class="text-3xl font-bold text-slate-900"><%= product.price %></span>
+                <span class="text-3xl font-bold text-slate-900">&yen;<%= Number(product.price).toLocaleString() %></span>
                 <span class="text-sm text-gray-500 font-medium">(税込)</span>
             </div>
 
@@ -63,9 +63,9 @@
                 <div class="flex items-center gap-4">
                     <label class="text-sm font-bold text-gray-700">数量</label>
                     <div class="flex items-center border border-gray-300 rounded-lg">
-                        <button class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-l-lg transition">-</button>
-                        <input type="text" value="1" class="w-12 h-10 text-center border-0 focus:ring-0 font-bold text-slate-900" readonly>
-                        <button class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-r-lg transition">+</button>
+                        <button class="quantity-minus w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-l-lg transition">-</button>
+                        <input type="text" name="quantity" value="1" class="w-12 h-10 text-center border-0 focus:ring-0 font-bold text-slate-900" readonly>
+                        <button class="quantity-plus w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-r-lg transition">+</button>
                     </div>
                 </div>
                 <% } %>
@@ -76,17 +76,22 @@
                         <span>販売開始までお待ちください</span>
                     </button>
                     <% } else { %>
-                    <button class="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        <span>カートに入れる</span>
-                    </button>
+
+                    <form action="/cart/add" method="POST" class="flex-1 flex">
+                        <input type="hidden" name="productId" value="<%= product.id %>">
+                        <input type="hidden" name="quantity" value="1" id="hidden-quantity">
+                        <button type="submit" class="w-full flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            <span>カートに入れる</span>
+                        </button>
+                    </form>
                     <% } %>
 
-                    <button class="flex-none bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 text-gray-400 font-bold p-4 rounded-xl transition-all group">
-                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    <button class="like-button flex-none bg-white border border-gray-200 hover:border-pink-300 hover:text-pink-500 text-gray-400 font-bold p-4 rounded-xl transition-all group" data-like-type="product" data-id="<%= product.id %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-none stroke-current transition-colors" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </button>
                 </div>
@@ -109,4 +114,38 @@
             </div>
         </div>
     </div>
+    </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const minusBtn = document.querySelector('.quantity-minus');
+        const plusBtn = document.querySelector('.quantity-plus');
+        const input = document.querySelector('input[name="quantity"]'); // Visible input
+        const hiddenInput = document.getElementById('hidden-quantity'); // Hidden input in form
+
+        const updateHidden = () => {
+            if (hiddenInput && input) {
+                hiddenInput.value = input.value;
+            }
+        };
+
+        if (minusBtn && plusBtn && input) {
+            minusBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                let val = parseInt(input.value);
+                if (val > 1) {
+                    input.value = val - 1;
+                    updateHidden();
+                }
+            });
+
+            plusBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                let val = parseInt(input.value);
+                input.value = val + 1;
+                updateHidden();
+            });
+        }
+    });
+</script>

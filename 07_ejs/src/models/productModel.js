@@ -1,8 +1,8 @@
 // Dummy product data
 import { products } from '../data/testProducts.js';
 
-const latests = () => {
-    return products.slice(0, 4);
+const latests = (limit = 3) => {
+    return products.slice(0, limit);
 }
 
 const fetchAll = () => {

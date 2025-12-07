@@ -1,11 +1,11 @@
 export const channels = [
     {
         id: 1,
-        name: "放課後のアンニュイな彼女は、意外と俺に興味があるらしい -第1話-",
-        description: "いつも気怠げなクラスの「高嶺の花」。放課後の教室で二人きりになった彼女は、頬杖をつきながら不器用な好意を隠している。",
-        cast: "神崎 莉央, 星野 スバル",
-        image: "/images/channels/2.png",
-        status: "on_air"
+        name: "東京第０区特別機動隊 -第2話-",
+        description: "「裏切り者」の元天才軍師と、堅物なエリート部隊長。かつての敵同士が、共通の巨悪を倒すために不本意ながらバディを組む。",
+        cast: "ミナ・ヴァーミリオン, クラウス, ルシア",
+        image: "/images/channels/3.png",
+        status: "coming_soon"
     },
     {
         id: 2,
@@ -17,11 +17,11 @@ export const channels = [
     },
     {
         id: 3,
-        name: "東京第０区特別機動隊 -第2話-",
-        description: "「裏切り者」の元天才軍師と、堅物なエリート部隊長。かつての敵同士が、共通の巨悪を倒すために不本意ながらバディを組む。",
-        cast: "ミナ・ヴァーミリオン, クラウス, ルシア",
-        image: "/images/channels/3.png",
-        status: "coming_soon"
+        name: "放課後のアンニュイな彼女は、意外と俺に興味があるらしい -第1話-",
+        description: "いつも気怠げなクラスの「高嶺の花」。放課後の教室で二人きりになった彼女は、頬杖をつきながら不器用な好意を隠している。",
+        cast: "神崎 莉央, 星野 スバル",
+        image: "/images/channels/2.png",
+        status: "on_air"
     },
     {
         id: 4,
