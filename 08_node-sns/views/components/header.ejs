@@ -10,16 +10,33 @@
       </a>
 
       <!-- 右側プロフィール -->
-      <% if (authUser?.id) { %>
-        <div class="flex items-center gap-4">
-          <img class="avatar w-9 h-9 rounded-full" src="/images/no-avatar.png" data-src="<%= authUser?.avatar_url %>">
-          <button id="logoutBtn"
-            class="p-2 rounded-full text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 transition-colors"
-            aria-label="Sign out">
-            <img src="/images/logout.svg" alt="Logout" class="w-5 h-5">
+      <% if (locals.authUser?.id) { %>
+      <div class="flex items-center gap-4">
+        <a href="/user/<%=  locals.authUser?.id %>">
+          <img class="avatar w-9 h-9 rounded-full" src="/images/no-avatar.png" data-src="<%= locals.authUser?.avatar_url %>">
+        </a>
+        <button id="logoutBtn"
+          class="p-2 rounded-full text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 transition-colors"
+          aria-label="Sign out">
+          <img src="/images/logout.svg" alt="Logout" class="w-5 h-5">
+        </button>
+      </div>
+      <% } else { %>
+      <div class="flex items-center gap-4">
+        <a href="/login">
+          <button class="p-2 rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors"
+            aria-label="Sign in">
+            Sign in
           </button>
-        </div>
-        <% } %>
+        </a>
+        <a href="/register">
+          <button class="p-2 rounded-full text-gray-800 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors"
+            aria-label="Sign up">
+            Sign up
+          </button>
+        </a>
+      </div>
+      <% } %>
     </div>
   </div>
 </header>

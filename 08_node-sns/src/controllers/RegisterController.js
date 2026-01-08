@@ -4,8 +4,10 @@ import userModel from "../models/User.js";
 export const index = (req, res) => {
     res.render("register", {
         user: {},
-        error: ''
+        error: req.session?.error || ''
     });
+    // セッションをクリア
+    req.session.error = null;
 };
 
 // ユーザー登録処理
@@ -24,26 +26,26 @@ export const add = async (req, res) => {
     // Emailチェック
     const existsUser = await userModel.findByEmail(email)
     if (existsUser && existsUser.id) {
+        // セッションにエラーメッセージを Flash
+        req.session.error = "そのメールアドレスは登録されています";
+
         // ユーザがいればユーザ登録画面へ
-        return res.render("register", {
-            user: { name, email },
-            error: "そのメールアドレスは登録されています"
-        });
+        return res.redirect('/register')
     }
 
-    // 新規ユーザー
+    // ユーザ情報生成
     const newUser = { name, email, password };
+
     // ユーザー登録
-    const userId = await userModel.save(newUser);
-    console.log(userId)
-    if (userId) {
+    const isSuccess = await userModel.save(newUser);
+    // console.log("isSuccess: ", isSuccess)
+    // 登録成功の場合、ログインページへ
+    if (isSuccess) {
         // Redirect /login
         return res.redirect("/login");
     }
 
-    // Render register
-    res.render("register", {
-        user: newUser,
-        error: "登録に失敗しました"
-    });
+    // 登録失敗の場合、ユーザ登録画面へ
+    req.session.error = "登録に失敗しました";
+    return res.redirect('/register')
 };

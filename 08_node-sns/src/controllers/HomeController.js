@@ -1,12 +1,10 @@
-import authService from "../services/authService.js";
-import userModel from "../models/User.js";
-
-// ログインページ
-export const index = (req, res) => {
+export const index = async (req, res) => {
+    // return res.send("Hello Node SNS!");
     if (req.session.user) {
         // Redirect /feed
         return res.redirect("/feed");
+    } else {
+        // Redirect /login
+        return res.redirect("/login");
     }
-    // Render login
-    res.render("login", { user: { email: "user1@test.com" } });
 };

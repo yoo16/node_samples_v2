@@ -1,15 +1,19 @@
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import layouts from "express-ejs-layouts";
 import cookieParser from "cookie-parser";
-import { auth } from './src/middlewares/auth.js';
+import { restoreUser } from './src/middlewares/authenticateRequest.js';
+// --- ルーティングファイル インポート ---
 import authRoutes from './src/routes/authRoutes.js';
 import registerRoutes from './src/routes/registerRoutes.js';
 import feedRoutes from './src/routes/feedRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 import apiRoutes from './src/routes/apiRoutes.js';
+
+// --- データベースマイグレーション ---
+import { migrate } from './database/db_migrate_users.js';
 
 // ---- Env ----
 dotenv.config();
@@ -17,21 +21,30 @@ const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 3000;
 
 // ---- Path ----
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve();
 
 // ---- Express ----
 const app = express();
 
-// ---- Required middleware ----
-// JWT Cookie読み込み
+// ---- public フォルダのWeb公開 ----
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ---- URLエンコーディング ----
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// --- JWT Cookie読み込み ---
 app.use(cookieParser());
 
-// Session
+// ---- セッション ----
 app.use(session({
     secret: process.env.SESSION_SECRET || 'default_secret',
     resave: false,
     saveUninitialized: false,
+    // Cookie 設定
+    // httpOnly: true で XSS 攻撃を防ぐ
+    // sameSite: "lax" で CSRF 攻撃を防ぐ
+    // secure: true で HTTPS で通信する
     cookie: {
         secure: false,
         httpOnly: true,
@@ -40,29 +53,30 @@ app.use(session({
     }
 }));
 
-// JWT → Session 復元 ＆ authUser を res.locals へ反映
-app.use(auth);
+// ---- 認証用（セッション＆JWT） ----
+app.use(restoreUser);
 
 // ---- View Engine ----
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// ---- レイアウト ----
+// views/layouts/default.ejs
 app.set('layout', 'layouts/default');
 app.use(layouts);
 
-// ---- Request Parser ----
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// ---- Static ----
-app.use(express.static(path.join(__dirname, 'public')));
-
-// ---- Routes ----
+// ---- ルーティング ----
 app.use('/', authRoutes);
-app.use('/', registerRoutes);
-app.use('/', feedRoutes);
+app.use('/register', registerRoutes);
+app.use('/feed', feedRoutes);
+app.use('/user', userRoutes);
 app.use('/api', apiRoutes);
 
-// ---- Server Start ----
+// ---- データベースマイグレーション ----
+migrate();
+
+// ---- サーバ起動 ----
 app.listen(port, host, () => {
     console.log(`Server running → http://${host}:${port}`);
 });

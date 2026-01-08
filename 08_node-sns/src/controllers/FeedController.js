@@ -3,7 +3,7 @@ import feedModel from "../models/Feed.js";
 export const index = async (req, res) => {
     const user = req.session.user;
     const feeds = await feedModel.fetchAllWithLikes(user);
-    res.render("feed/index", { feeds });
+    return res.render("feed/index", { feeds });
 };
 
 export const show = async (req, res) => {

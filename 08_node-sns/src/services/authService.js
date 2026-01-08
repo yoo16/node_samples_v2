@@ -2,27 +2,34 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import * as userModel from "../models/User.js";
 
-export async function auth(email, password) {
+export async function verifyLogin(email, password) {
     // Emailで検索
     const user = await userModel.findByEmail(email);
-    // ユーザがいなければ、空白オブジェクト
     if (!user) return {};
 
-    // ハッシュパスワード
-    const isAuth = await bcrypt.compare(password, user.password);
-    // 認証失敗で、空白オブジェクト
-    if (!isAuth) return {};
+    // ハッシュパスワード検証
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return {};
 
-    // 🔥 JWT 発行
-    const token = jwt.sign(
-        { id: user.id },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-    );
-    console.log("token: ", token)
-    return { user, token };
+    // トークン生成
+    const { accessToken, refreshToken } = await generateTokens(user.id);
+
+    return { user, accessToken, refreshToken };
 }
 
+export const generateTokens = async (userId) => {
+    // アクセストークン (15分)
+    const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
+
+    // リフレッシュトークン (30日)
+    const refreshToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "30d" });
+
+    // DB更新
+    await userModel.updateRefreshToken(userId, refreshToken);
+    return { accessToken, refreshToken };
+};
+
 export default {
-    auth,
+    verifyLogin,
+    generateTokens,
 };

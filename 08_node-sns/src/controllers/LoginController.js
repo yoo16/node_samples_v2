@@ -4,54 +4,63 @@ import userModel from "../models/User.js";
 // ログインページ
 export const index = (req, res) => {
     if (req.session.user) {
-        // Redirect /feed
+        // ログインしていれば: Redirect /feed
         return res.redirect("/feed");
     } else {
+        // セッションからデータを取得
+        const data = {
+            user: req.session.input || {},
+            error: req.session.error || "",
+        }
+        // セッションクリア
+        req.session.error = "";
         // Render login
-        res.render("login", { user: { email: "user1@test.com" } });
+        return res.render("login", data);
     }
 };
 
 // ログイン処理
 export const auth = async (req, res) => {
-    // email, password 取得
     const { email, password } = req.body;
-    // バリデーション
-    if (!email || !password) {
-        // Render login
-        return res.render("login", { user: { email } });
-    }
 
-    // ユーザー認証
-    const { user, token } = await authService.auth(email, password);
-    console.log(token)
+    const { user, accessToken, refreshToken } = await authService.verifyLogin(email, password);
 
-    // 認証失敗
-    if (!user || !token) {
-        // Render login
-        return res.render("login", { user: { email } });
+    if (!user || !accessToken || !refreshToken) {
+        req.session.input = { email };
+        req.session.error = "メールアドレスとパスワードが間違っています。";
+        return res.redirect("/login");
     }
 
     // セッション登録
     req.session.user = user;
 
-    // Cookie登録
-    res.cookie("token", token, {
+    // アクセストークン (短命: 15分)
+    res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 7
+        maxAge: 1000 * 60 * 15
     });
 
-    // Redirect /feed
-    res.redirect("/feed");
+    // リフレッシュトークン (長命: 30日)
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 30
+    });
+
+    return res.redirect("/");
 };
 
 // ログアウト
 export const logout = async (req, res) => {
     req.session.destroy(() => {
         // Cookie削除
-        res.clearCookie("token");
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+        // DB更新
+        userModel.updateRefreshToken(req.session.user.id, null);
         // Redirect /login
         res.redirect("/login");
     });

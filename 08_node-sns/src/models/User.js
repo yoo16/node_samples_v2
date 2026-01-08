@@ -24,23 +24,9 @@ export const fetchAll = async (limit = 50) => {
     return users;
 };
 
-// ユーザーデータ保存
-export const save = async (newUser) => {
-    // TODO: パスワードハッシュ化
-    newUser.password = bcrypt.hashSync(newUser.password, 10);
-    // TODO: DB 書き込み処理
-    const sql = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-    const [result] = await pool.query(sql, [
-        newUser.name,
-        newUser.email,
-        newUser.password,
-    ]);
-    return result.affectedRows
-};
-
 // IDでユーザー検索
-export const find = async (id) => {
-    // TODO: DB から取得
+export const findById = async (id) => {
+    // DB から取得
     const sql = 'SELECT * FROM users WHERE id = ?';
     // SQL実行: id をバインド
     const [rows] = await pool.query(sql, [id]);
@@ -49,17 +35,61 @@ export const find = async (id) => {
 
 // メールアドレスでユーザー検索
 export const findByEmail = async (email) => {
-    // TODO: email で users テーブルを検索
+    // email で users テーブルを検索
     const sql = 'SELECT * FROM users WHERE email = ?';
     // SQL 実行: email をバインド
     const [rows] = await pool.query(sql, [email]);
     return rows.length > 0 ? rows[0] : null;
 };
 
+// ユーザーデータ保存
+export const save = async (newUser) => {
+    // パスワードハッシュ化
+    newUser.password = bcrypt.hashSync(newUser.password, 10);
+    // DB 書き込み処理
+    const sql = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
+    const [result] = await pool.query(sql, [
+        newUser.name,
+        newUser.email,
+        newUser.password,
+    ]);
+    // 1 なら成功
+    return result.affectedRows
+};
+
+// ユーザーデータ保存
+export const update = async (id, posts) => {
+    console.log("update user: ", posts)
+    // DB 書き込み処理
+    const sql = `UPDATE users SET name = ?, avatar_url = ? WHERE id = ?;`
+    const [result] = await pool.query(sql, [
+        posts.name,
+        posts.avatar_url,
+        id,
+    ]);
+    return result.affectedRows
+};
+
+// リフレッシュトークンの検証用（ミドルウェアで使用）
+export async function findByRefreshToken(id, token) {
+    const sql = `SELECT * FROM users WHERE id = ? AND refresh_token = ?`;
+    const [rows] = await pool.query(sql, [id, token]);
+    return rows[0];
+}
+
+// リフレッシュトークン更新
+export async function updateRefreshToken(id, token) {
+    const sql = `UPDATE users SET refresh_token = ? WHERE id = ?`;
+    await pool.query(sql, [token, id]);
+}
+
 export default {
     initUser,
     fetchAll,
-    save,
-    find,
+    findById,
     findByEmail,
+    save,
+    update,
+    findByRefreshToken,
+    updateRefreshToken,
 };

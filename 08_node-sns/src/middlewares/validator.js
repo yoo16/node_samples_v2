@@ -22,17 +22,13 @@ export const registerValidationRules = [
 // エラーがあればレスポンスを返すミドルウェア
 export const validate = (req, res, next) => {
     const errors = validationResult(req);
+
     if (errors.isEmpty()) {
-        // エラーがなければ次の処理（コントローラー）へ
         return next();
     }
 
-    // エラー時のレスポンス形式を統一
-    const data = {
-        sql: '',
-        message: '',
-        errors: errors.array(),
-        endpoint: req.url,
-    };
-    return res.json(data);
+    const messages = errors.array().map(err => err.msg);
+    req.session.errors = messages;
+    req.session.input = req.body;
+    return res.redirect('back');
 };

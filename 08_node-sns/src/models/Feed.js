@@ -50,6 +50,31 @@ export const fetchAllWithLikes = async (user, keyword = "", limit = 20) => {
     return feeds;
 };
 
+// 全データ取得
+export const fetchByUser = async (user, limit = 20) => {
+    if (!user) return;
+
+    let data = [user.id, user.id, limit];
+    let sql = `SELECT 
+                    feeds.*,
+                    users.name AS user_name,
+                    users.avatar_url AS user_avatar_url,
+                    COUNT(likes.user_id) AS likes_count,
+                    COUNT(mylikes.user_id) AS liked
+                FROM feeds
+                JOIN users ON feeds.user_id = users.id
+                    LEFT JOIN likes ON feeds.id = likes.feed_id
+                    LEFT JOIN likes AS mylikes ON feeds.id = mylikes.feed_id AND mylikes.user_id = ?
+                WHERE feeds.user_id = ?
+                GROUP BY feeds.id
+                ORDER BY feeds.created_at DESC
+                LIMIT ?`;
+
+    const [feeds] = await pool.query(sql, data);
+    return feeds;
+};
+
+
 // ID でデータ検索
 export const findById = async (id) => {
     try {
@@ -97,4 +122,5 @@ export default {
     fetchAllWithLikes,
     findById,
     add,
+    fetchByUser,
 };
