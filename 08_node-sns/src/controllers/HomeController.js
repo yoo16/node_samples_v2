@@ -1,5 +1,5 @@
 export const index = async (req, res) => {
-    // return res.send("Hello Node SNS!");
+    // return res.send("Hello Node!");
     if (req.session.user) {
         // Redirect /feed
         return res.redirect("/feed");

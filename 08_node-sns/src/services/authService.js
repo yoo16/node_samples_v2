@@ -2,34 +2,42 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import * as userModel from "../models/User.js";
 
+/**
+ * ログイン検証
+ */
 export async function verifyLogin(email, password) {
-    // Emailで検索
     const user = await userModel.findByEmail(email);
-    if (!user) return {};
+    if (!user) return null;
 
-    // ハッシュパスワード検証
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return {};
+    if (!isMatch) return null;
 
-    // トークン生成
-    const { accessToken, refreshToken } = await generateTokens(user.id);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
 
     return { user, accessToken, refreshToken };
 }
 
-export const generateTokens = async (userId) => {
-    // アクセストークン (15分)
-    const accessToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "15m" });
-
-    // リフレッシュトークン (30日)
-    const refreshToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "30d" });
-
-    // DB更新
-    await userModel.updateRefreshToken(userId, refreshToken);
-    return { accessToken, refreshToken };
+/**
+ * トークン生成系 (同期処理)
+ */
+export const generateAccessToken = (user) => {
+    return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "15m" });
 };
 
-export default {
-    verifyLogin,
-    generateTokens,
+export const generateRefreshToken = (user) => {
+    return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
+
+
+/**
+ * 検証系 (同期処理)
+ */
+export const verifyToken = (token) => {
+    try {
+        // jwt.verify は同期的に値を返すため await 不要
+        return jwt.verify(token, process.env.JWT_SECRET);
+    } catch {
+        return null;
+    }
 };

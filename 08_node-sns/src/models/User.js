@@ -61,13 +61,9 @@ export const save = async (newUser) => {
 export const update = async (id, posts) => {
     console.log("update user: ", posts)
     // DB 書き込み処理
-    const sql = `UPDATE users SET name = ?, avatar_url = ? WHERE id = ?;`
-    const [result] = await pool.query(sql, [
-        posts.name,
-        posts.avatar_url,
-        id,
-    ]);
-    return result.affectedRows
+    const sql = "UPDATE users SET ? WHERE id = ?";
+    const [result] = await pool.query(sql, [posts, id]);
+    return result.affectedRows;
 };
 
 // リフレッシュトークンの検証用（ミドルウェアで使用）

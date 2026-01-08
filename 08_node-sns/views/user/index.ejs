@@ -1,8 +1,14 @@
 <main class="container mx-auto max-w-2xl px-4 py-8 mt-16 sm:mt-20">
     <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-300">
 
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-slate-700">
             <h1 class="text-xl font-bold text-gray-800 dark:text-white"><%= user.name %></h1>
+
+            <% if (locals.authUser.id === user.id) { %>
+            <a href="/user/<%= user.id %>/edit" class="bg-sky-500 text-white text-sm font-medium px-4 py-2 rounded-lg ml-4">
+                編集
+            </a>
+            <% } %>
         </div>
 
         <div class="p-6">

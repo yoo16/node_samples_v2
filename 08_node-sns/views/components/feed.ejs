@@ -1,7 +1,7 @@
 <div class="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
   <div class="flex items-start space-x-4">
     <!-- user_avatar_url -->
-    <img class="avatar w-9 h-9 rounded-full" src="/images/no-avatar.png" data-src="<%= feed.user_avatar_url %>">
+    <img class="avatar w-9 h-9 rounded-full object-cover" src="/images/no-avatar.png" data-src="<%= feed.user_avatar_url %>">
 
     <div class="flex-1 min-w-0">
       <div class="flex items-baseline gap-2">
@@ -11,13 +11,13 @@
         </span>
         <!-- timestamp -->
         <span class="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
-          · <%= feed.created_at %>
+          <span class="relative-time text-sm text-gray-500 dark:text-gray-400 flex-shrink-0" data-date="<%= feed.created_at %>">
+            · <%= feed.created_at %>
+          </span>
         </span>
       </div>
       <!-- content -->
-      <div data-id="<%= feed.id %>" class="feed-content mt-1 text-gray-700 dark:text-gray-300">
-        <%= feed.content %>
-      </div>
+      <div data-id="<%= feed.id %>" class="feed-content cursor-pointer mt-1 py-2 text-gray-700 dark:text-gray-300 whitespace-pre-wrap"><%= feed.content %></div>
     </div>
   </div>
 

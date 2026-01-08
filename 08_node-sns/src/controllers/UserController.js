@@ -19,10 +19,19 @@ export const edit = async (req, res) => {
 
 export const update = async (req, res) => {
     const id = res.locals.authUser.id;
-    const posts = req.body;
-    if (req.file) {
-        posts.avatar_url = `/images/users/${req.file.filename}`;
+    // POSTデータをコピー
+    const updateData = { ...req.body };
+    // 新しい画像がある場合、URLを更新
+    if (req.file && req.file.filename) {
+        updateData.avatar_url = `/images/users/${req.file.filename}`;
+    } else {
+        delete updateData.avatar_url;
     }
-    await userModel.update(id, posts);
-    return res.redirect("/user");
+    // 更新
+    const result = await userModel.update(id, updateData);
+    // セッション更新
+    if (result) {
+        req.session.user = await userModel.findById(id);
+    }
+    return res.redirect("/user/" + id);
 };

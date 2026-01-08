@@ -1,5 +1,5 @@
-import authService from "../services/authService.js";
 import userModel from "../models/User.js";
+import * as authService from "../services/authService.js";
 
 // ログインページ
 export const index = (req, res) => {
@@ -22,48 +22,50 @@ export const index = (req, res) => {
 // ログイン処理
 export const auth = async (req, res) => {
     const { email, password } = req.body;
-
+    // ログイン検証
     const { user, accessToken, refreshToken } = await authService.verifyLogin(email, password);
-
-    if (!user || !accessToken || !refreshToken) {
+    if (!user) {
         req.session.input = { email };
         req.session.error = "メールアドレスとパスワードが間違っています。";
         return res.redirect("/login");
     }
+    // リフレッシュトークン更新
+    await userModel.updateRefreshToken(user.id, refreshToken);
+
+    // Cookie保存
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000,
+        sameSite: "lax"
+    });
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        sameSite: "lax"
+    });
 
     // セッション登録
     req.session.user = user;
-
-    // アクセストークン (短命: 15分)
-    res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 15
-    });
-
-    // リフレッシュトークン (長命: 30日)
-    res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 30
-    });
-
-    return res.redirect("/");
+    // Redirect /feed
+    return res.redirect("/feed");
 };
 
 // ログアウト
 export const logout = async (req, res) => {
-    req.session.destroy(() => {
-        // Cookie削除
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken");
-        // DB更新
-        userModel.updateRefreshToken(req.session.user.id, null);
-        // Redirect /login
-        res.redirect("/login");
-    });
+    const user = req.session?.user;
+    if (!user) return res.redirect("/login");
+
+    // 1. DBのリフレッシュトークンを消去
+    await userModel.updateRefreshToken(user.id, null);
+
+    // 2. Cookieを消去
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+
+    // 3. ユーザセッションを破棄
+    req.session.user = null;
+    // Redirect /login
+    return res.redirect("/login");
 };
 
 // ユーザー登録ページ

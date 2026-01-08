@@ -12,9 +12,6 @@ import feedRoutes from './src/routes/feedRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
 import apiRoutes from './src/routes/apiRoutes.js';
 
-// --- データベースマイグレーション ---
-import { migrate } from './database/db_migrate_users.js';
-
 // ---- Env ----
 dotenv.config();
 const host = process.env.HOST || 'localhost';
@@ -72,9 +69,6 @@ app.use('/register', registerRoutes);
 app.use('/feed', feedRoutes);
 app.use('/user', userRoutes);
 app.use('/api', apiRoutes);
-
-// ---- データベースマイグレーション ----
-migrate();
 
 // ---- サーバ起動 ----
 app.listen(port, host, () => {

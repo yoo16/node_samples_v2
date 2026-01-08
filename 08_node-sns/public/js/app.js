@@ -1,6 +1,9 @@
 const nonAvatar = "/images/no-avatar.png";
 
 document.addEventListener("DOMContentLoaded", function () {
+    updateTimes();
+    setInterval(updateTimes, 60000);
+
     // =====================
     // ハッシュタグ
     // =====================
@@ -8,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const text = el.innerHTML;
 
         // ハッシュタグをリンク化
-        const linked = text.replace(/#([一-龯ぁ-んァ-ンー\w]+)/gu, function (match, tag) {
+        const linked = text.replace(/#\s*([一-龯ぁ-んァ-ンー\w]+)/gu, function (match, tag) {
             const url = `/feed/search/?keyword=${encodeURIComponent(tag)}`;
             return `<a href="${url}" class="text-blue-500 hover:underline">${match}</a>`;
         });
@@ -90,3 +93,35 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
 });
+
+
+// js/app.js
+
+/**
+ * 相対時間を計算する関数
+ */
+function getRelativeTime(dateString) {
+    const now = new Date();
+    const past = new Date(dateString);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    if (diffInSeconds < 60) return `${diffInSeconds}秒前`;
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `${diffInMinutes}分前`;
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours}時間前`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays}日前`;
+
+    return past.toLocaleDateString('ja-JP');
+}
+
+/**
+ * 画面上のすべての日時表示を更新する
+ */
+function updateTimes() {
+    document.querySelectorAll('.relative-time').forEach(el => {
+        const date = el.getAttribute('data-date');
+        el.innerText = ' · ' + getRelativeTime(date);
+    });
+}
