@@ -33,7 +33,7 @@ const chart = new Chart(ctx, {
     },
 });
 
-// ✅ SSE 接続
+// SSE 接続
 const eventSource = new EventSource("/stream");
 eventSource.onmessage = (e) => {
     try {

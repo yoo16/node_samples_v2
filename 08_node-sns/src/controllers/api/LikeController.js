@@ -3,7 +3,7 @@ import LikeModel from "../../models/Like.js";
 export const toggle = async (req, res) => {
     try {
         const feedId = req.params.id;
-        const user = req.session.user;
+        const user = req.session.authUser;
 
         if (!user) {
             return res.status(401).json({ success: false, message: "Unauthorized" });

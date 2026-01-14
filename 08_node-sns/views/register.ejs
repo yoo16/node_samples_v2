@@ -1,9 +1,9 @@
 <div
-  class="flex items-center justify-center min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
-  <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-xl dark:bg-slate-800 m-4">
+  class="flex items-center justify-center min-h-screen bg-slate-100">
+  <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-xl m-4">
     <div class="text-center">
       <div class="flex justify-center items-center gap-2 mb-4">
-        <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900">
           Sign Up
         </h1>
       </div>
@@ -11,13 +11,13 @@
 
     <form action="/register" method="post" class="space-y-4">
       <div>
-        <input type="text" id="name" name="name" value="<%= user?.name || '' %>" required
+        <input type="text" id="name" name="name" value="<%= locals.input?.name || '' %>" required
           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
           placeholder="名前">
       </div>
 
       <div>
-        <input type="email" id="email" name="email" value="<%= user.email || '' %>" required
+        <input type="email" id="email" name="email" value="<%= locals.input?.email || '' %>" required
           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
           placeholder="メールアドレス">
       </div>
@@ -25,7 +25,7 @@
       <div>
         <input type="password" id="password" name="password" required
           class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
-          placeholder="パスワード">
+          placeholder="6文字以上のパスワード">
       </div>
 
       <div>

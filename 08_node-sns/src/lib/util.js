@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
         callback(null, uploadDir);
     },
     filename: (req, file, callback) => {
-        const userId = req.session.user.id;
+        const userId = req.session.authUser.id;
         if (userId) {
             const ext = path.extname(file.originalname);
             const filename = `${userId}${ext}`;

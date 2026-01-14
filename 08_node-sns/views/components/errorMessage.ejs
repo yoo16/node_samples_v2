@@ -3,3 +3,10 @@
     <%= locals.error %>
 </div>
 <% } %>
+<% if (locals.errors) { %>
+<div class="bg-pink-100 text-xs text-red-500 p-2 rounded">
+    <% locals.errors.forEach(error => { %>
+    <p><%= error %></p>
+    <% }) %>
+</div>
+<% } %>

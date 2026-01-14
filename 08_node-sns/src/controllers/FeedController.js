@@ -1,7 +1,7 @@
 import feedModel from "../models/Feed.js";
 
 export const index = async (req, res) => {
-    const user = req.session.user;
+    const user = req.session.authUser;
     const feeds = await feedModel.fetchAllWithLikes(user);
     return res.render("feed/index", { feeds });
 };
@@ -18,7 +18,7 @@ export const show = async (req, res) => {
 };
 
 export const search = async (req, res) => {
-    const user = req.session.user;
+    const user = req.session.authUser;
     const keyword = req.query.keyword;
 
     const feeds = await feedModel.fetchAllWithLikes(user, keyword);
@@ -26,7 +26,7 @@ export const search = async (req, res) => {
 };
 
 export const add = async (req, res) => {
-    const user_id = req.session.user?.id;
+    const user_id = req.session.authUser?.id;
     const content = req.body.content;
 
     if (!content || !user_id) {

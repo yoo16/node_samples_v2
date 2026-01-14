@@ -31,7 +31,7 @@ export const update = async (req, res) => {
     const result = await userModel.update(id, updateData);
     // セッション更新
     if (result) {
-        req.session.user = await userModel.findById(id);
+        req.session.authUser = await userModel.findById(id);
     }
     return res.redirect("/user/" + id);
 };
