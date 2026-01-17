@@ -1,0 +1,59 @@
+/* 牌の基本デザイン */
+.tile {
+    width: 36px;
+    height: 52px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 0 #ddd, 0 3px 0 #bbb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.tile:hover {
+    transform: translateY(-8px);
+    border-color: #4f46e5;
+}
+
+/* 卓の背景（マット） */
+.mj-table {
+    background-color: #1e5a3e;
+    border: 12px solid #3d2b1f;
+}
+
+#my-hand {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.tile {
+    width: 40px;
+    height: 60px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #bbb;
+    transition: transform 0.1s;
+}
+
+.tile:hover {
+    transform: translateY(-10px);
+    /* ホバーで少し浮かせる */
+    background: #f0f9ff;
+}
+
+#my-hand {
+    display: flex;
+    gap: 4px;
+}

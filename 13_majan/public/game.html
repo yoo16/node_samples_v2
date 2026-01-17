@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahjong Live</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/game.css">
+</head>
+
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
+    <div id="lobby" class="bg-slate-800 p-8 rounded-xl shadow-2xl text-center">
+        <h1 class="text-white text-2xl font-bold mb-6">麻雀 Live ロビー</h1>
+
+        <select id="room-select"
+            class="px-4 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 mb-4 w-64 block mx-auto">
+            <option value="room1">対局室 1</option>
+            <option value="room2">対局室 2</option>
+            <option value="room3">対局室 3</option>
+        </select>
+
+        <button id="join-btn"
+            class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-8 rounded-lg transition">
+            入室する
+        </button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div
+            class="mj-table relative w-full max-w-[800px] aspect-square rounded-xl shadow-2xl flex flex-col items-center justify-between p-6">
+
+            <div id="river-top" class="absolute top-32 left-1/2 -translate-x-1/2 w-36 h-24 flex flex-wrap rotate-180">
+            </div>
+
+            <div id="river-bottom" class="absolute bottom-32 left-1/2 -translate-x-1/2 w-36 h-24 flex flex-wrap"></div>
+
+            <div id="river-left"
+                class="absolute left-32 top-1/2 -translate-y-1/2 w-36 h-24 flex flex-wrap rotate-90 origin-center">
+            </div>
+
+            <div id="river-right"
+                class="absolute right-32 top-1/2 -translate-y-1/2 w-36 h-24 flex flex-wrap flex-row-reverse rotate-[-90deg] origin-center">
+            </div>
+
+            <div id="player-top" class="flex gap-1 rotate-180">
+                <div class="w-6 h-10 bg-slate-400 rounded-sm"></div>
+            </div>
+
+            <div
+                class="absolute inset-0 m-auto w-40 h-40 bg-black/20 rounded-lg border border-white/10 flex flex-col items-center justify-center text-white text-xs gap-1">
+                <div class="text-lg font-bold">東 1 局</div>
+                <div>ドラ: <span class="bg-white text-black px-1 rounded">一</span></div>
+                <div class="text-slate-300">残り 70 枚</div>
+            </div>
+
+            <div class="w-full flex flex-col items-center gap-4">
+                <div id="actions" class="flex gap-2 mb-2 hidden">
+                    <button class="bg-orange-500 text-white px-4 py-1 rounded-full font-bold shadow-lg">ポン</button>
+                    <button class="bg-red-600 text-white px-4 py-1 rounded-full font-bold shadow-lg">ロン</button>
+                </div>
+
+                <div id="my-hand" class="flex gap-1">
+                </div>
+            </div>
+
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 rotate-90 flex gap-1">
+                <div class="w-6 h-10 bg-slate-400 rounded-sm"></div>
+            </div>
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 -rotate-90 flex gap-1">
+                <div class="w-6 h-10 bg-slate-400 rounded-sm"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/js/game.js"></script>
+</body>
+
+</html>

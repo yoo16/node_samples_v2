@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaintSync - リアルタイムお絵かき</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/draw.css">
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col items-center p-4 md:p-8 text-gray-800">
+
+    <header class="mb-6 w-full max-w-5xl flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-black text-black-600">PaintSync.</h1>
+            <p class="text-sm text-gray-500 font-medium">Real-time Creative Canvas</p>
+        </div>
+        <div
+            class="flex items-center gap-2 text-xs font-bold text-gray-400 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> ONLINE
+        </div>
+    </header>
+
+    <main class="w-full max-w-5xl flex flex-col md:flex-row gap-6">
+        <aside
+            class="flex md:flex-col gap-4 p-4 bg-white rounded-2xl shadow-xl border border-gray-200 md:w-20 items-center">
+            <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Color</span>
+            <div class="relative group">
+                <input type="color" id="colorPicker" value="#000000"
+                    class="w-12 h-12 rounded-lg cursor-pointer border-none bg-transparent">
+            </div>
+
+            <div class="w-px h-8 md:w-8 md:h-px bg-gray-100"></div>
+
+            <button id="paintBtn" class="w-12 h-12 flex items-center justify-center rounded-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 6.5l4 4" />
+                </svg>
+            </button>
+
+            <button id="eraserBtn" class="w-12 h-12 flex items-center justify-center rounded-xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21l-4-4c-1-1-1-2.5 0-3.4l9.5-9.5c1-1 2.5-1 3.4 0l5.5 5.5c1 1 1 2.5 0 3.4L13 21H7z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 21h4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l9 9" />
+                </svg>
+            </button>
+
+            <div class="w-px h-8 md:w-8 md:h-px bg-gray-100"></div>
+
+            <div class="flex flex-col items-center gap-3 w-full">
+                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Size</span>
+
+                <div id="sizeSelector" class="flex md:flex-col gap-3">
+                    <button data-size="2"
+                        class="size-btn group w-12 h-12 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-transparent hover:border-gray-200 transition-all">
+                        <div class="bg-gray-400 group-[.active]:bg-gray-600 rounded-full w-[2px] h-[2px]"></div>
+                    </button>
+                    <button data-size="6"
+                        class="size-btn group w-12 h-12 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-transparent hover:border-gray-200 transition-all">
+                        <div class="bg-gray-400 rounded-full w-[6px] h-[6px]"></div>
+                    </button>
+                    <button data-size="14"
+                        class="size-btn group w-12 h-12 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-transparent hover:border-gray-200 transition-all">
+                        <div class="bg-gray-400 group-[.active]:bg-gray-600 rounded-full w-[14px] h-[14px]"></div>
+                    </button>
+                    <button data-size="30"
+                        class="size-btn group w-12 h-12 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-transparent hover:border-gray-200 transition-all">
+                        <div class="bg-gray-400 group-[.active]:bg-gray-600 rounded-full w-[24px] h-[24px]"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hidden md:block flex-grow"></div>
+
+            <button id="clearBtn" class="p-3 text-black hover:bg-red-50 rounded-xl transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        </aside>
+
+        <div id="canvas-container"
+            class="relative bg-white rounded-2xl shadow-2xl border-4 border-white overflow-hidden">
+            <canvas id="canvas" width="900" height="600" class="w-full h-full block bg-white"></canvas>
+        </div>
+    </main>
+
+    <script src="/js/draw.js"></script>
+</body>
+
+</html>

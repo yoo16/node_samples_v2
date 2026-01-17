@@ -15,7 +15,6 @@ let stockInterval = null;
 // 静的ファイルの提供 (publicフォルダ内の index.html 等)
 app.use(express.static(path.join(__dirname, "public")));
 
-
 // SSE エンドポイント
 app.get("/stream", (req, res) => {
     res.writeHead(200, {
@@ -25,6 +24,7 @@ app.get("/stream", (req, res) => {
     });
 
     clients.push(res);
+
     startStreaming();
 
     req.on("close", () => {
@@ -45,12 +45,12 @@ const startStreaming = () => {
     if (stockInterval) return;
     stockInterval = setInterval(() => {
         currentPrice = Math.max(0, currentPrice + (Math.random() - 0.5));
-        const data = JSON.stringify({
+        const data = {
             type: "price",
             time: new Date().toLocaleTimeString(),
             value: currentPrice.toFixed(2),
-        });
-
-        clients.forEach(res => res.write(`data: ${data}\n\n`));
+        };
+        const json = JSON.stringify(data);
+        clients.forEach(res => res.write(`data: ${json}\n\n`));
     }, 1000);
 };

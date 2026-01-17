@@ -11,21 +11,30 @@ const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 
 // Socket.IO サーバーを作成
-const io = new Server(server);
+const io = new Server(server, {
+    // CORS 設定
+    cors: {
+        origin: "http://localhost:3000",
+    },
+});
 
+// 接続イベント
 io.on("connection", (socket) => {
     console.log("ユーザー接続:", socket.id);
 
     // 描画イベント
     socket.on("draw", (data) => {
+        // ブロードキャスト
         socket.broadcast.emit("draw", data);
     });
 
     // クリアイベント
     socket.on("clear", () => {
-        io.emit("clear"); // 全員に通知
+        // 全員に通知
+        io.emit("clear");
     });
 
+    // 切断
     socket.on("disconnect", () => {
         console.log("ユーザー切断:", socket.id);
     });
