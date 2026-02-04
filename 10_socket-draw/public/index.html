@@ -15,13 +15,49 @@
     <header class="mb-6 w-full max-w-5xl flex justify-between items-end">
         <div>
             <h1 class="text-3xl font-black text-black-600">PaintSync.</h1>
-            <p class="text-sm text-gray-500 font-medium">Real-time Creative Canvas</p>
+            <div class="flex items-center gap-2">
+                <div class="text-gray-500 font-medium">
+                    <span id="currentRoomName" class="text-indigo-600 font-bold">未参加</span>
+                </div>
+                <button onclick="location.reload()"
+                    class="text-[10px] bg-gray-200 px-2 py-0.5 rounded hover:bg-gray-300">部屋を変更</button>
+            </div>
         </div>
         <div
             class="flex items-center gap-2 text-xs font-bold text-gray-400 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
             <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> ONLINE
         </div>
     </header>
+
+    <div id="roomModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm border border-gray-100">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-black text-gray-800 mb-2">どこで描く？</h2>
+                <p class="text-gray-500 text-sm">のんびりお絵かきする場所を選んでね。</p>
+            </div>
+
+            <div class="relative mb-6">
+                <select id="roomSelect"
+                    class="w-full appearance-none border-2 border-gray-100 p-4 rounded-2xl bg-gray-50 text-gray-700 font-bold focus:border-indigo-400 outline-none cursor-pointer transition-all">
+                    <option value="ひだまりの庭">🌼 ひだまりの庭</option>
+                    <option value="そよ風のテラス">🍃 そよ風のテラス</option>
+                    <option value="まどろみの森">🌲 まどろみの森</option>
+                    <option value="星空のキャンプ">✨ 星空のキャンプ</option>
+                    <option value="ふわふわの雲の上">☁️ ふわふわの雲の上</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                    <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </div>
+            </div>
+
+            <button id="joinBtn"
+                class="w-full bg-indigo-500 text-white font-black p-4 rounded-2xl shadow-lg shadow-indigo-200 hover:bg-indigo-600 hover:-translate-y-0.5 transition-all">
+                キャンバスに入る
+            </button>
+        </div>
+    </div>
 
     <main class="w-full max-w-5xl flex flex-col md:flex-row gap-6">
         <aside

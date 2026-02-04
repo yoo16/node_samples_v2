@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Learning Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-slate-50 min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-4xl mx-auto w-full">
+        <div class="text-center mb-16">
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl shadow-lg mb-4 text-white">
+                <i class="fas fa-network-wired text-2xl"></i>
+            </div>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-2">WebSocket Samples</h1>
+            <p class="text-slate-500">プロトコル別のリアルタイム通信実装サンプル</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <a href="ws-client.html" target="_blank"
+                class="group relative bg-white p-8 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="p-3 bg-emerald-50 rounded-xl group-hover:bg-emerald-500 transition-colors duration-300">
+                        <i class="fas fa-code font-bold text-emerald-600 group-hover:text-white"></i>
+                    </div>
+                    <span class="text-xs font-mono font-bold px-3 py-1 bg-slate-100 text-slate-500 rounded-full">PORT:
+                        3001</span>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 text-left">WS Client</h2>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6 text-left">
+                    標準のWebSocket APIを使用した純粋な実装。軽量でオーバーヘッドが少なく、ブラウザ標準機能をそのまま学習できます。
+                </p>
+                <div class="flex items-center text-emerald-600 font-bold text-sm">
+                    Open Interface <i
+                        class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <a href="socketio-client.html" target="_blank"
+                class="group relative bg-white p-8 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="p-3 bg-pink-50 rounded-xl group-hover:bg-pink-500 transition-colors duration-300">
+                        <i class="fas fa-bolt text-pink-600 group-hover:text-white"></i>
+                    </div>
+                    <span class="text-xs font-mono font-bold px-3 py-1 bg-slate-100 text-slate-500 rounded-full">PORT:
+                        3002</span>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 text-left">Socket.io Client</h2>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6 text-left">
+                    自動再接続、ルーム機能、フォールバックなどを備えた高機能ライブラリ。実用的なリアルタイムアプリ開発に最適です。
+                </p>
+                <div class="flex items-center text-pink-600 font-bold text-sm">
+                    Open Interface <i
+                        class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+        </div>
+
+        <footer class="mt-16 text-center text-slate-400 text-sm">
+            <p>Node.js Server is running on Background</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

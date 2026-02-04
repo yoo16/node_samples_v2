@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WS Client | WebSocket Samples</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-slate-50 min-h-screen p-4 md:p-12">
+    <div class="max-w-4xl mx-auto">
+
+        <nav class="flex items-center space-x-2 text-sm text-slate-500 mb-8">
+            <a href="index.html" class="hover:text-indigo-600 transition-colors">Dashboard</a>
+            <span>/</span>
+            <span class="text-slate-900 font-semibold">WS Client</span>
+        </nav>
+
+        <header class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div class="flex items-center">
+                <div class="p-4 bg-emerald-500 rounded-2xl shadow-lg shadow-emerald-200 mr-5 text-white">
+                    <i class="fas fa-code text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black text-slate-900 tracking-tight">WS Client</h1>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-end gap-2">
+                <div
+                    class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                    <span id="status" class="text-xs bg-red-500 text-white px-4 py-1 rounded-full font-bold">
+                        Disconnected
+                    </span>
+                    <span class="text-xs text-slate-500">http://localhost:3002</span>
+                </div>
+                <div
+                    class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                    <span class="text-xs bg-sky-500 text-white px-4 py-1 rounded-full tracking-widest">
+                        Socket ID
+                    </span>
+                    <span id="socketId" class="text-xs text-sky-500 px-4 py-1"></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="bg-white shadow-2xl shadow-slate-200 flex flex-col">
+
+            <div class="p-6 bg-slate-50 border-b border-slate-100">
+                <div class="flex gap-3">
+                    <div class="relative flex-1">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                            <i class="fas fa-terminal text-xs"></i>
+                        </div>
+                        <input type="text" id="message-input" placeholder="サーバーへメッセージを送信..."
+                            class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all shadow-sm">
+                    </div>
+                    <button id="send-btn"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-100 flex items-center">
+                        <span>Send</span>
+                        <i class="fas fa-paper-plane ml-2 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative group">
+                <div
+                    class="absolute top-4 left-6 text-[10px] font-bold text-slate-600 uppercase tracking-widest pointer-events-none flex items-center">
+                    <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2"></span>
+                    <span class="text-white">Live Console Output</span>
+                </div>
+                <div id="log" class="h-[400px] p-10 pt-14 bg-slate-900 font-mono text-sm overflow-y-auto space-y-3">
+                    <div class="text-white italic">Waiting for connection...</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-8 text-center">
+            <p class="text-slate-400 text-xs">Standard WebSocket API (RFC 6455)</p>
+        </footer>
+    </div>
+
+    <script src="/js/ws-client.js"></script>
+</body>
+
+</html>

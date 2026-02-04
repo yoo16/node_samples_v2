@@ -1,11 +1,19 @@
-// Socket.IO
 const socket = io();
+
+// Room UI
+const roomModal = document.getElementById("roomModal");
+const roomSelect = document.getElementById("roomSelect"); // Select要素を取得
+const joinBtn = document.getElementById("joinBtn");
+const currentRoomNameDisp = document.getElementById("currentRoomName");
+
+// 現在のルーム名
+let currentRoom = "";
 
 // Canvas
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-// UI
+// お絵描きUI
 const colorPicker = document.getElementById("colorPicker");
 const paintBtn = document.getElementById("paintBtn");
 const eraserBtn = document.getElementById("eraserBtn");
@@ -21,6 +29,18 @@ let color = colorPicker.value;
 let lastColor = color;
 
 let size = document.querySelector(".size-btn.active")?.dataset.size || 6;
+
+// Room 管理
+joinBtn.addEventListener("click", () => {
+    // セレクトボックスから値を取得
+    const roomName = roomSelect.value;
+
+    currentRoom = roomName;
+    currentRoomNameDisp.textContent = roomName;
+
+    // サーバーにルーム参加を通知
+    socket.emit("join-room", roomName);
+});
 
 // モード切り替え時のUI更新関数
 function updateModeUI() {
@@ -62,16 +82,20 @@ function drawLine(x1, y1, x2, y2, c, s, emit = true) {
     ctx.lineTo(x2, y2);
     ctx.stroke();
 
-    if (emit) socket.emit("draw", { x1, y1, x2, y2, color: c, size: s });
+    // emit する場合、currentRoom があればサーバに送信
+    if (emit && currentRoom) {
+        socket.emit("draw", { x1, y1, x2, y2, color: c, size: s });
+    }
 }
 
-// イベントリスナー
+// ドロー開始
 const start = (e) => {
     drawing = true;
     const p = getPointerPos(e);
     [lastX, lastY] = [p.x, p.y];
 };
 
+// ドロー中
 const move = (e) => {
     if (!drawing) return;
     const p = getPointerPos(e);
@@ -79,8 +103,10 @@ const move = (e) => {
     [lastX, lastY] = [p.x, p.y];
 };
 
+// ドロー終了
 const stop = () => drawing = false;
 
+// マウスイベント
 canvas.addEventListener("mousedown", start);
 canvas.addEventListener("mousemove", move);
 window.addEventListener("mouseup", stop);
@@ -127,8 +153,31 @@ eraserBtn.addEventListener("click", () => {
 });
 
 // Socket通信
+// 入室
+socket.on("join-room", (roomName) => {
+    currentRoom = roomName;
+    currentRoomNameDisp.textContent = roomName;
+    roomModal.classList.add("hidden");
+});
+
+// 描画データの受信
 socket.on("draw", (d) => drawLine(d.x1, d.y1, d.x2, d.y2, d.color, d.size, false));
-socket.on("clear", () => ctx.clearRect(0, 0, canvas.width, canvas.height));
+// 履歴データの受信
+socket.on("history", (historyData) => {
+    // 描画前に一度キャンバスを白紙にする（念のため）
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 履歴データを1つずつ描画
+    historyData.forEach(d => {
+        drawLine(d.x1, d.y1, d.x2, d.y2, d.color, d.size, false);
+    });
+});
+// クリア
+clearBtn.addEventListener("click", () => {
+    if (!currentRoom) return;
+    // 自分の画面を消す
+    socket.emit("clear");
+});
 
 // 初期状態のUIを反映
 updateModeUI();
