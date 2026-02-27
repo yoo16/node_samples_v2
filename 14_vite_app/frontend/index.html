@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タスク管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-start justify-center pt-16 px-4">
+  <div class="w-full max-w-lg">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <!-- ヘッダー -->
+      <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-6">
+        <h1 class="text-2xl font-bold text-white tracking-wide">📝 タスク管理</h1>
+        <p class="text-blue-100 text-sm mt-1">やることを管理しよう</p>
+      </div>
+
+      <!-- 入力フォーム -->
+      <div class="px-8 py-6 border-b border-gray-100">
+        <form class="flex gap-3">
+          <input
+            type="text"
+            placeholder="新しいタスクを入力..."
+            class="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-300 transition"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-semibold transition-colors shadow-sm"
+          >
+            追加
+          </button>
+        </form>
+      </div>
+
+      <!-- タスクリスト -->
+      <div id="app" class="px-8 py-4 min-h-[200px]"></div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

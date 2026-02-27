@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 space-y-6">
+        <h1 class="text-2xl font-bold text-gray-800 text-center">Auth System</h1>
+
+        <div class="space-y-4">
+            <button onclick="login()"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                ログイン実行
+            </button>
+
+            <button onclick="getProfile()"
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                プロファイル取得
+            </button>
+        </div>
+
+        <div id="status" class="hidden p-4 rounded-lg bg-gray-50 border border-gray-200">
+            <p class="text-xs font-mono text-gray-600 break-all" id="output"></p>
+        </div>
+    </div>
+
+    <script>
+        let token = '';
+
+        const showOutput = (data) => {
+            const el = document.getElementById('status');
+            el.classList.remove('hidden');
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        };
+
+        async function login() {
+            const res = await fetch('/api/login', { method: 'POST' });
+            const data = await res.json();
+            token = data.token;
+            showOutput({ message: "Login Success", token_preview: token.substring(0, 20) + "..." });
+        }
+
+        async function getProfile() {
+            if (!token) return alert("先にログインしてください");
+
+            const res = await fetch('/api/profile', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            showOutput(data);
+        }
+    </script>
+</body>
+
+</html>
