@@ -1,10 +1,10 @@
 {
-  "name": "03_server",
+  "name": "05_express",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "node --watch server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,8 +14,5 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.1.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }

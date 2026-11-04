@@ -1,2 +1,2 @@
 
-print("phthon コマンドで実行されました！")
+print("python コマンドで実行されました！")

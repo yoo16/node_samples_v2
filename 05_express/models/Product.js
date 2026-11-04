@@ -1,15 +1,16 @@
-// fs モジュールのインポート
+// fs, path モジュールのインポート
 import fs from 'fs';
+import path from 'path';
 // 現在のディレクトリパスを取得
-const __dirname = new URL('.', import.meta.url).pathname;
+const __dirname = path.resolve();
 // データファイルのパス
-const path = __dirname + '/../data/products.json';
+const filePath = path.join(__dirname, 'data', 'products.json');
 
 // ------------------------
 // 商品データを読み込む
 // ------------------------
 export function fetchProducts() {
-    const data = fs.readFileSync(path, 'utf-8');
+    const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data);
 }
 

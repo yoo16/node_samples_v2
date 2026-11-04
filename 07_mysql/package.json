@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node --watch server.js"
   },
   "dependencies": {
     "@faker-js/faker": "^10.1.0",
@@ -17,8 +17,5 @@
     "multer": "^2.0.2",
     "mysql2": "^3.15.3",
     "uuid": "^13.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }

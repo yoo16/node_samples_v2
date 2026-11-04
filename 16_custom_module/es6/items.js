@@ -13,16 +13,16 @@ export const items = [
         price: 550,
     },
     {
-        id: 'D0004',
+        id: 'D0003',
         name: 'モカフラペチーノ',
         description: 'チョコレートとエスプレッソの絶妙なハーモニーを楽しめるフラペチーノ',
-        price: 500,
+        price: 530,
     },
     {
         id: 'D0004',
         name: 'ダージリンティー',
         description: '爽やかな香りと繊細な味わいのダージリンティー',
-        price: 500,
+        price: 520,
     },
     {
         id: 'D0005',

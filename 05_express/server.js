@@ -2,6 +2,8 @@
 import dotenv from 'dotenv';
 // express インポート(ESM)
 import express from 'express';
+// path モジュールのインポート
+import path from 'path';
 
 // Dotenvの設定をロード
 dotenv.config();
@@ -19,9 +21,15 @@ console.log(BASE_URL);
 const app = express();
 
 // 現在のディレクトリパスを取得
-const __dirname = new URL('.', import.meta.url).pathname;
+const __dirname = path.resolve();
 
 // ミドルウェア設定
+// カスタムミドルウェア: すべてのリクエストでログ出力
+app.use((req, res, next) => {
+    console.log(`ミドルウェア: ${req.method} ${req.url}`);
+    next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
@@ -38,33 +46,9 @@ app.get('/test', (req, res) => {
     res.send(message);
 });
 
-// GET: エンドポイント: /test
-app.get('/info', (req, res) => {
-    console.log("ルーティング: /info");
-    const message = 'Hello, Express!';
-    res.send(message);
-});
-
-// POST: エンドポイント: /save
-app.post('/save', (req, res) => {
-    console.log("ルーティング: /save");
-    const message = 'POST リクエストを受け取りました';
-    res.send(message);
-});
-
 // GET: エンドポイント: /
 app.get('/', (req, res) => {
     console.log("ルーティング: /");
-    res.sendFile(__dirname + '/public/home.html');
-});
-
-// GET: エンドポイント: /search : keyword クエリパラメータ対応
-app.get('/search', (req, res) => {
-    console.log("ルーティング: /search");
-    if (req.query.keyword) {
-        const keyword = req.query.keyword;
-        console.log("検索キーワード: " + keyword);
-    }
     res.sendFile(__dirname + '/public/home.html');
 });
 
@@ -79,6 +63,30 @@ app.get('/product/:id', (req, res) => {
     const id = req.params.id;
     console.log("ルーティング: /product/" + id);
     res.sendFile(__dirname + '/public/product.html');
+});
+
+// ALL: エンドポイント: /info
+app.all('/info', (req, res) => {
+    console.log("ルーティング: /info");
+    const message = 'すべてのHTTPメソッドでこのルートにマッチします';
+    res.send(message);
+});
+
+// GET: エンドポイント: /search : keyword クエリパラメータ対応
+app.get('/search', (req, res) => {
+    console.log("ルーティング: /search");
+    if (req.query.keyword) {
+        const keyword = req.query.keyword;
+        console.log("検索キーワード: " + keyword);
+    }
+    res.sendFile(__dirname + '/public/home.html');
+});
+
+// POST: エンドポイント: /save
+app.post('/save', (req, res) => {
+    console.log("ルーティング: /save");
+    const message = 'POST リクエストを受け取りました';
+    res.send(message);
 });
 
 
@@ -119,17 +127,6 @@ app.get('/api/search', (req, res) => {
     console.log("検索キーワード: " + keyword);
 
     const products = searchProducts(keyword);
-    const data = { products }
-    // JSON データを返す
-    res.json(data);
-});
-
-// GET: エンドポイント: /api/product/list
-app.get('/api/product/list', (req, res) => {
-    console.log("ルーティング: api/product/list");
-
-    // 商品データを読み込む
-    const products = fetchProducts();
     const data = { products }
     // JSON データを返す
     res.json(data);

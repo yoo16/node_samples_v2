@@ -4,7 +4,7 @@ import http from "http";
 // HTTPサーバ作成
 const server = http.createServer((req, res) => {
     // TODO: ヘッダー
-    res.writeHead(200, { "Content-Type": "text/text; charset=utf-8" });
+    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
 
     // データ作成
     const data = {
@@ -31,5 +31,5 @@ server.listen(PORT, HOST, () => {
     console.log(`🚀 Server running at http://${HOST}:${PORT}`);
 });
 
-// ターミナル： node server.js で起動
+// ターミナル： node simple_server.js で起動
 // サーバ停止： Ctrl + C

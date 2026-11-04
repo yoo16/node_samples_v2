@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "game": "nodemon game_server.js",
+    "dev": "node --watch server.js",
+    "game": "node --watch game_server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,8 +14,5 @@
   "dependencies": {
     "express": "^5.1.0",
     "socket.io": "^4.8.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }

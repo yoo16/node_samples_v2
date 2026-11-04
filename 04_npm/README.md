@@ -15,10 +15,6 @@ npm i express
 npm i express-session
 ```
 
-```bash
-npm i -D nodemon
-```
-
 ## 環境設定ファイル作成
 - .env を作成
 

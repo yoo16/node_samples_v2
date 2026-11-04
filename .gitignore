@@ -1,4 +1,6 @@
 .DS_Store
+*/docs/*.md
+*/docs/svg/*
 node_modules/
 dist/
 .env
@@ -10,3 +12,5 @@ coverage/
 *.bak
 *.swp
 Thumbs.db
+
+05_express_example/

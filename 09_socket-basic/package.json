@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "node --watch server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,8 +15,5 @@
     "express": "^5.2.1",
     "socket.io": "^4.8.3",
     "ws": "^8.19.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }

@@ -6,16 +6,11 @@ npm i dotenv
 npm i express
 ```
 
-### DevDependencies
-```bash
-npm i -D nodemon
-```
-
 ## package.json修正
 ### 起動スクリプト
 ```json
 "scripts": {
-  "dev": "nodemon server.js"
+  "dev": "node --watch server.js"
 },
 ```
 
