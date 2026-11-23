@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL Client · Node SQLite</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-white text-neutral-900 antialiased">
+  <div id="header"></div>
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="mb-6 text-2xl font-semibold tracking-tight">SQL Client</h1>
+    <section class="mb-8 divide-y divide-neutral-200 rounded-xl border border-neutral-200 text-sm">
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">Endpoint</span><code id="endpoint" class="font-mono text-neutral-600"></code></div>
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">SQL</span><pre id="sql" class="overflow-x-auto font-mono text-neutral-600"></pre></div>
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">Message</span><span id="message" class="font-mono text-neutral-600"></span></div>
+    </section>
+    <div class="mb-6 flex flex-wrap items-center gap-2">
+      <button data-url="/api/users/count" class="q rounded-lg border border-neutral-200 px-3 py-1.5 text-sm transition hover:border-neutral-900">Users count</button>
+      <button data-url="/api/feeds/join" class="q rounded-lg border border-neutral-200 px-3 py-1.5 text-sm transition hover:border-neutral-900">Feeds JOIN users</button>
+      <form id="email-form" class="ml-auto flex gap-2">
+        <input id="email" value="user1@test.com" class="w-44 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm focus:border-neutral-900 focus:outline-none" />
+        <button class="rounded-lg bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-neutral-700">Find by email</button>
+      </form>
+    </div>
+    <div id="result" class="overflow-x-auto rounded-xl border border-neutral-200">
+      <p class="px-4 py-10 text-center text-sm text-neutral-400">クエリを選んでください</p>
+    </div>
+  </main>
+  <script type="module">
+    import { api, showStatus, esc } from '/js/layout.js';
+
+    async function run(url) {
+      const r = await api(url);
+      showStatus({ ...r, endpoint: `GET ${url}` });
+      const rows = r.data ?? [];
+      const cols = rows.length ? Object.keys(rows[0]) : [];
+      document.getElementById('result').innerHTML = rows.length ? `
+        <table class="w-full text-left text-sm">
+          <thead class="border-b border-neutral-200 bg-neutral-50 text-neutral-500"><tr>${cols.map((c) => `<th class="px-4 py-2.5 font-medium">${esc(c)}</th>`).join('')}</tr></thead>
+          <tbody class="divide-y divide-neutral-100">${rows.map((row) => `<tr>${cols.map((c) => `<td class="px-4 py-2.5">${esc(row[c])}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>` : '<p class="px-4 py-10 text-center text-sm text-neutral-400">0 rows</p>';
+    }
+
+    document.querySelectorAll('.q').forEach((b) => b.addEventListener('click', () => run(b.dataset.url)));
+    document.getElementById('email-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      run(`/api/users/by-email?email=${encodeURIComponent(document.getElementById('email').value)}`);
+    });
+  </script>
+</body>
+</html>

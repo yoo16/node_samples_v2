@@ -16,7 +16,7 @@ const show = (req, res) => {
     const channel = Channel().find(id);
     // チャンネルが存在しない場合は、トップページにリダイレクト
     if (!channel) {
-        res.redirect('/');
+        return res.redirect('/');
     }
     // ビューにチャンネルを渡す
     res.render('channel/show', {

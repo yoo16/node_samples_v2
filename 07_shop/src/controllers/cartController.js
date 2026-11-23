@@ -1,4 +1,5 @@
 import Cart from '../models/cartModel.js';
+import Product from '../models/productModel.js';
 
 const index = (req, res) => {
     // new は不要。関数を実行してオブジェクトを受け取る
@@ -15,7 +16,14 @@ const index = (req, res) => {
 
 const add = (req, res) => {
     const { productId, quantity } = req.body;
-    const qty = Number(quantity, 10) || 1;
+    // 数量は 1 以上の整数にする
+    const qty = Math.max(1, parseInt(quantity, 10) || 1);
+
+    // 存在しない商品は、カートに追加しない
+    if (!Product().find(productId)) {
+        return res.redirect('/products');
+    }
+
     if (!req.session.cart) {
         req.session.cart = [];
     }
@@ -34,12 +42,13 @@ const add = (req, res) => {
 };
 
 // カートから商品を削除
-// カートから商品を削除
 const remove = (req, res) => {
     const { productId } = req.body;
     if (req.session.cart) {
-        // カートから商品を削除
-        req.session.cart = Cart(req.session.cart).remove(productId);
+        // カートから商品を削除（remove は値を返さないため、getData で配列を取得）
+        const cart = Cart(req.session.cart);
+        cart.remove(productId);
+        req.session.cart = cart.getData();
     }
     res.redirect('/cart');
 };

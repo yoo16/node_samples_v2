@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users · Node SQLite</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-white text-neutral-900 antialiased">
+  <div id="header"></div>
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="mb-6 text-2xl font-semibold tracking-tight">Users</h1>
+    <section class="mb-8 divide-y divide-neutral-200 rounded-xl border border-neutral-200 text-sm">
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">Endpoint</span><code id="endpoint" class="font-mono text-neutral-600"></code></div>
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">SQL</span><pre id="sql" class="overflow-x-auto font-mono text-neutral-600"></pre></div>
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">Message</span><span id="message" class="font-mono text-neutral-600"></span></div>
+    </section>
+    <div class="overflow-hidden rounded-xl border border-neutral-200">
+      <table class="w-full text-left text-sm">
+        <thead class="border-b border-neutral-200 bg-neutral-50 text-neutral-500">
+          <tr><th class="px-4 py-2.5 font-medium">ID</th><th class="px-4 py-2.5 font-medium">Name</th><th class="px-4 py-2.5 font-medium">Email</th><th class="px-4 py-2.5 font-medium">Joined</th></tr>
+        </thead>
+        <tbody id="user-list" class="divide-y divide-neutral-100"></tbody>
+      </table>
+    </div>
+  </main>
+  <script type="module">
+    import { api, showStatus, esc, fmtDate } from '/js/layout.js';
+    const r = await api('/api/users');
+    showStatus({ ...r, endpoint: 'GET /api/users' });
+    document.getElementById('user-list').innerHTML = r.users.map((u) => `
+      <tr class="hover:bg-neutral-50">
+        <td class="px-4 py-2.5 text-neutral-400">${u.id}</td>
+        <td class="px-4 py-2.5 font-medium">${esc(u.name)}</td>
+        <td class="px-4 py-2.5 text-neutral-500">${esc(u.email)}</td>
+        <td class="px-4 py-2.5 text-neutral-400">${fmtDate(u.created_at)}</td>
+      </tr>`).join('');
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feeds · Node SQLite</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-white text-neutral-900 antialiased">
+  <div id="header"></div>
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    <h1 class="mb-6 text-2xl font-semibold tracking-tight">Feeds</h1>
+    <section class="mb-8 divide-y divide-neutral-200 rounded-xl border border-neutral-200 text-sm">
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">Endpoint</span><code id="endpoint" class="font-mono text-neutral-600"></code></div>
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">SQL</span><pre id="sql" class="overflow-x-auto font-mono text-neutral-600"></pre></div>
+      <div class="flex gap-4 px-4 py-2.5"><span class="w-20 shrink-0 text-neutral-400">Message</span><span id="message" class="font-mono text-neutral-600"></span></div>
+    </section>
+    <form id="post-form" class="mb-3 flex gap-2">
+      <select id="user-select" name="user_id" required class="w-40 shrink-0 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm focus:border-neutral-900 focus:outline-none"></select>
+      <input id="content" name="content" required placeholder="いまどうしてる？" class="min-w-0 flex-1 rounded-lg border border-neutral-200 px-3 py-2 text-sm focus:border-neutral-900 focus:outline-none" />
+      <button class="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-700">Post</button>
+    </form>
+    <div class="mb-10 flex items-center gap-3 rounded-lg border border-dashed border-red-200 bg-red-50/50 px-3 py-2 text-sm">
+      <code id="injection-content" class="flex-1 select-all overflow-x-auto font-mono text-red-700">x'); DELETE FROM feeds; --</code>
+      <button id="injection-button" class="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-red-600 transition hover:bg-red-50">Post injection</button>
+    </div>
+    <ul id="feed-list" class="divide-y divide-neutral-100"></ul>
+  </main>
+  <script type="module">
+    import { api, postJson, showStatus, esc, fmtDate, initials } from '/js/layout.js';
+
+    const list = document.getElementById('feed-list');
+
+    async function load() {
+      const r = await api('/api/feeds');
+      showStatus({ ...r, endpoint: 'GET /api/feeds' });
+      list.innerHTML = r.feeds.length ? r.feeds.map((f) => `
+        <li class="flex gap-3 py-4">
+          <div class="flex size-9 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-xs font-medium text-neutral-600">${esc(initials(f.user_name))}</div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-baseline gap-2 text-sm"><span class="font-medium">${esc(f.user_name)}</span><span class="text-neutral-400">${fmtDate(f.created_at)}</span></div>
+            <p class="mt-0.5 break-words text-neutral-700">${esc(f.content)}</p>
+          </div>
+          <button data-id="${f.id}" class="delete self-start text-sm text-neutral-300 transition hover:text-red-500">Delete</button>
+        </li>`).join('') : '<li class="py-10 text-center text-sm text-neutral-400">No feeds yet.</li>';
+    }
+
+    async function loadUsers() {
+      const r = await api('/api/users?limit=100');
+      document.getElementById('user-select').innerHTML = r.users.map((u) => `<option value="${u.id}">${esc(u.name)}</option>`).join('');
+    }
+
+    document.getElementById('post-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = Object.fromEntries(new FormData(e.target));
+      const r = await postJson('/api/feeds', body);
+      showStatus({ ...r, endpoint: 'POST /api/feeds' });
+      if (!r.errors.length) { e.target.content.value = ''; await load(); showStatus({ ...r, endpoint: 'POST /api/feeds' }); }
+    });
+
+    document.getElementById('injection-button').addEventListener('click', async () => {
+      const r = await postJson('/api/feeds/injection', {
+        user_id: document.getElementById('user-select').value,
+        content: document.getElementById('injection-content').textContent,
+      });
+      await load();
+      showStatus({ ...r, endpoint: 'POST /api/feeds/injection' });
+    });
+
+    list.addEventListener('click', async (e) => {
+      const id = e.target.dataset.id;
+      if (!e.target.classList.contains('delete')) return;
+      const r = await api(`/api/feeds/${id}/destroy`, { method: 'POST' });
+      await load();
+      showStatus({ ...r, endpoint: `POST /api/feeds/${id}/destroy` });
+    });
+
+    await loadUsers();
+    await load();
+  </script>
+</body>
+</html>

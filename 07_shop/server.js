@@ -19,6 +19,9 @@ const __dirname = path.resolve();
 // Express アプリケーションを初期化
 const app = express();
 
+// X-Powered-By ヘッダーを無効にする（使用技術を公開しない）
+app.disable('x-powered-by');
+
 // レイアウトを有効にする
 app.use(expressLayouts);
 app.set('layout', 'layout');
@@ -37,7 +40,11 @@ app.use(session({
     secret: secretKey,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: {
+        secure: false,
+        // 他サイトからの POST では Cookie を送信しない（CSRF 対策）
+        sameSite: 'lax'
+    }
 }));
 
 // ミドルウェア
@@ -56,6 +63,23 @@ app.use((req, res, next) => {
 });
 
 app.use('/', routes);
+
+// 404 エラー（どのルーティングにも一致しない場合）
+app.use((req, res) => {
+    res.status(404).render('error', {
+        status: 404,
+        message: 'ページが見つかりません'
+    });
+});
+
+// エラーハンドラ（4 つの引数が必要）
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).render('error', {
+        status: 500,
+        message: 'サーバーエラーが発生しました'
+    });
+});
 
 app.listen(port, host, () => {
     console.log(`App listening at http://${host}:${port}`);

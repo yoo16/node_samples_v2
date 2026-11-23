@@ -13,6 +13,10 @@ const index = (req, res) => {
 const show = (req, res) => {
     const id = req.params.id;
     const product = Product().find(id);
+    // 商品が存在しない場合は、商品一覧にリダイレクト
+    if (!product) {
+        return res.redirect('/products');
+    }
     const categories = Category().fetchAll();
     res.render('product/show', {
         product,
