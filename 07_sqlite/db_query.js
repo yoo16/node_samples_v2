@@ -4,8 +4,9 @@ import { db } from './lib/db.js';
 const sql = process.argv[2] || 'SELECT * FROM users LIMIT 5';
 console.log(sql);
 try {
-    console.table(db.prepare(sql).all());
-} catch (e) {
-    console.error(e.message);
+    const statement = db.prepare(sql);
+    console.table(statement.all());
+} catch (error) {
+    console.error(error.message);
 }
 db.close();

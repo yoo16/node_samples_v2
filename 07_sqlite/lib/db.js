@@ -16,14 +16,16 @@ db.exec('PRAGMA foreign_keys = ON;');
 
 // 画面表示用: ? をパラメータで置換した SQL 文字列
 export const format = (sql, params = []) => {
-    let i = 0;
+    let index = 0;
     return sql.replace(/\?/g, () => {
-        const v = params[i++];
-        return typeof v === 'number' ? String(v) : `'${String(v).replace(/'/g, "''")}'`;
+        const value = params[index++];
+        return typeof value === 'number' ? String(value) : `'${String(value).replace(/'/g, "''")}'`;
     });
 };
 
 // schema.sql を実行
 export const migrate = () => {
-    db.exec(fs.readFileSync(path.resolve('database/schema.sql'), 'utf-8'));
+    const schemaFile = path.resolve('database/schema.sql');
+    const schema = fs.readFileSync(schemaFile, 'utf-8');
+    db.exec(schema);
 };
