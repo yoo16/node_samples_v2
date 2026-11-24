@@ -148,14 +148,45 @@
     </section>
     <section class="mt-10 rounded-xl bg-neutral-50 px-5 py-4 text-sm leading-relaxed text-neutral-600">
       <h2 class="mb-2 font-medium text-neutral-900">node:sqlite の基本</h2>
-      <ul class="list-disc space-y-1 pl-5">
-        <li>上の <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">Connected</code> は、<span class="inline-flex items-center overflow-hidden rounded-md border border-neutral-300 bg-white align-middle font-mono text-sm font-semibold"><span class="bg-emerald-600 px-1.5 py-0.5 text-white">GET</span><span class="px-2 py-0.5 text-neutral-900">/api/db/status</span></span> で <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">SELECT sqlite_version()</code> を実行できたときに表示されます。接続できないときは <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">Not connected</code> とエラーが表示されます。</li>
-        <li><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">new DatabaseSync(ファイルパス)</code> で接続します。DB は 1 つのファイル（<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">database/app.db</code>）で、DB サーバーは不要です。</li>
-        <li><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">prepare(sql)</code> で SQL を準備し、<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">all()</code>（全件）・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">get()</code>（1 件）・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">run()</code>（追加・更新・削除）で実行します。</li>
-        <li><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">db.exec(sql)</code> は結果が不要な SQL（<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">CREATE TABLE</code>・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">BEGIN</code>・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">COMMIT</code> など）の実行に使います。</li>
-        <li>値は <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">?</code> のプレースホルダで渡します。処理は同期なので <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">await</code> は不要です。</li>
-        <li>各ページの上部にある Endpoint / SQL / Message で、呼び出した API と実行された SQL を確認できます。</li>
-      </ul>
+      <div class="overflow-x-auto rounded-xl border border-neutral-200 bg-white">
+        <table class="w-full text-left text-sm text-neutral-600">
+          <thead class="bg-neutral-50 text-xs text-neutral-500">
+            <tr><th class="px-3 py-2 font-medium">項目</th><th class="px-3 py-2 font-medium">コード</th><th class="px-3 py-2 font-medium">解説</th></tr>
+          </thead>
+          <tbody>
+          <tr class="border-t border-neutral-200">
+            <td class="whitespace-nowrap px-3 py-2 font-medium text-neutral-900">Connected の表示</td>
+            <td class="px-3 py-2"><span class="inline-flex items-center overflow-hidden rounded-md border border-neutral-300 bg-white align-middle font-mono text-sm font-semibold"><span class="bg-emerald-600 px-1.5 py-0.5 text-white">GET</span><span class="px-2 py-0.5 text-neutral-900">/api/db/status</span></span> <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">SELECT sqlite_version()</code></td>
+            <td class="px-3 py-2">上の <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">Connected</code> は、このクエリを実行できたときに表示されます。接続できないときは <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">Not connected</code> とエラーが表示されます。</td>
+          </tr>
+          <tr class="border-t border-neutral-200">
+            <td class="whitespace-nowrap px-3 py-2 font-medium text-neutral-900">接続</td>
+            <td class="px-3 py-2"><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">new DatabaseSync(ファイルパス)</code></td>
+            <td class="px-3 py-2">DB は 1 つのファイル（<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">database/app.db</code>）で、DB サーバーは不要です。</td>
+          </tr>
+          <tr class="border-t border-neutral-200">
+            <td class="whitespace-nowrap px-3 py-2 font-medium text-neutral-900">SQL の準備と実行</td>
+            <td class="px-3 py-2"><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">prepare(sql)</code></td>
+            <td class="px-3 py-2">SQL を準備し、<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">all()</code>（全件）・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">get()</code>（1 件）・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">run()</code>（追加・更新・削除）で実行します。</td>
+          </tr>
+          <tr class="border-t border-neutral-200">
+            <td class="whitespace-nowrap px-3 py-2 font-medium text-neutral-900">結果が不要な SQL</td>
+            <td class="px-3 py-2"><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">db.exec(sql)</code></td>
+            <td class="px-3 py-2"><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">CREATE TABLE</code>・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">BEGIN</code>・<code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">COMMIT</code> など、結果が不要な SQL の実行に使います。</td>
+          </tr>
+          <tr class="border-t border-neutral-200">
+            <td class="whitespace-nowrap px-3 py-2 font-medium text-neutral-900">値の渡し方</td>
+            <td class="px-3 py-2"><code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">?</code></td>
+            <td class="px-3 py-2">値は <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">?</code> のプレースホルダで渡します。処理は同期なので <code class="rounded border border-sky-200 bg-sky-50 px-1.5 py-0.5 font-mono text-sm font-semibold text-sky-800">await</code> は不要です。</td>
+          </tr>
+          <tr class="border-t border-neutral-200">
+            <td class="whitespace-nowrap px-3 py-2 font-medium text-neutral-900">画面で確認</td>
+            <td class="px-3 py-2">Endpoint / SQL / Message</td>
+            <td class="px-3 py-2">各ページの上部で、呼び出した API と実行された SQL を確認できます。</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
       <pre class="mt-4 overflow-x-auto rounded-xl bg-neutral-900 p-4 font-mono text-sm leading-relaxed text-neutral-100"><code><span class="text-sky-300">import</span> { DatabaseSync } <span class="text-sky-300">from</span> <span class="text-emerald-300">'node:sqlite'</span>;
 
 <span class="text-sky-300">const</span> db = <span class="text-sky-300">new</span> DatabaseSync(<span class="text-emerald-300">'database/app.db'</span>);       <span class="text-neutral-500">// 接続 (ファイルがなければ作成)</span>
